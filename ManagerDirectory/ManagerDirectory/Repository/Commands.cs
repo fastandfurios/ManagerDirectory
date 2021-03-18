@@ -13,7 +13,9 @@ namespace ManagerDirectory.Repository
 			"ls",
 			"cp",
 			"rm",
-			"info"
+			"info",
+			"clear",
+			"cd"
 		};
 }
 }

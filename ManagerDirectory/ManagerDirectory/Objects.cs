@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ManagerDirectory.Actions;
 using ManagerDirectory.IO;
 using ManagerDirectory.Serialization;
 
@@ -12,16 +13,18 @@ namespace ManagerDirectory
     {
 	    protected InputData _input;
 	    protected Output _output;
+	    protected Copying _copying;
 	    protected Serializer _serializer;
 	    protected Deserializer _deserializer;
-		
 
-			public Objects()
+
+	    public Objects()
 	    {
 		    _serializer = new Serializer();
 		    _deserializer = new Deserializer();
 		    _input = new InputData();
 		    _output = new Output();
+		    _copying = new Copying();
 	    }
     }
 }
