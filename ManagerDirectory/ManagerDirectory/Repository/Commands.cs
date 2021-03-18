@@ -16,6 +16,8 @@ namespace ManagerDirectory.Repository
 			"info",
 			"clear",
 			"cd",
+			"cd..",
+			"cd\\",
 			"exit"
 		};
 }

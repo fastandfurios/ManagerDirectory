@@ -15,7 +15,6 @@ namespace ManagerDirectory
 	    protected InputData _input;
 	    protected Output _output;
 	    protected Copying _copying;
-	    protected Moving _moving;
 	    protected Serializer _serializer;
 	    protected Deserializer _deserializer;
 
@@ -27,7 +26,6 @@ namespace ManagerDirectory
 		    _input = new InputData();
 		    _output = new Output();
 		    _copying = new Copying();
-		    _moving = new Moving();
 	    }
     }
 }

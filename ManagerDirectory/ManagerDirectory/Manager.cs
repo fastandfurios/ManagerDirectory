@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,7 +42,13 @@ namespace ManagerDirectory
 						Console.Clear();
 						break;
 					case "cd":
-						Move();
+						_defaultPath = _defaultPath + _empty.Split(" ")[1] + "\\";
+						break;
+					case "cd..":
+						_defaultPath = Directory.GetParent(_defaultPath.Remove(_defaultPath.Length-1, 1)).FullName;
+						break;
+					case "cd\\":
+						_defaultPath = Directory.GetDirectoryRoot(_defaultPath);
 						break;
 					case "info":
 						break;
@@ -61,14 +68,9 @@ namespace ManagerDirectory
 			_output.OutputTree(path);
 		}
 
-		private void CallCopying(string path, string newPath)
+		private void CallCopying(string name, string newPath)
 		{
-			_copying.Copy(path, newPath);
-		}
-
-		private void Move()
-		{
-			_moving.Move();
+			_copying.Copy(_defaultPath, name, newPath, Run);
 		}
     }
 }

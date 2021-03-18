@@ -9,34 +9,33 @@ namespace ManagerDirectory.Actions
 {
     public class Copying
     {
-	    public void Copy(string oldPath, string newPath)
+	    public void Copy(string oldPath, string name, string newPath, Action run)
 	    {
 		    try
 		    {
-			    if (oldPath.Contains('.'))
+			    if (name.Contains('.'))
 			    {
-					CopyFiles(oldPath, newPath);
+				    foreach (var file in Directory.GetFiles(oldPath, name, SearchOption.TopDirectoryOnly))
+					    File.Copy(file, file.Replace(oldPath, newPath), true);
 
 					Console.WriteLine($"Копирование прошло успешно!");
 			    }
 			    else
 			    {
-				    foreach (var directory in Directory.GetDirectories(oldPath,"*", SearchOption.TopDirectoryOnly))
+				    foreach (var directory in Directory.GetDirectories(oldPath,name, SearchOption.TopDirectoryOnly))
 					    Directory.CreateDirectory(directory.Replace(oldPath, newPath));
 
-				    CopyFiles(oldPath, newPath);
-			    }
+					foreach (var file in Directory.GetFiles(oldPath, "*.*", SearchOption.TopDirectoryOnly))
+						File.Copy(file, file.Replace(oldPath, newPath), true);
+
+					Console.WriteLine($"Копирование прошло успешно!");
+				}
 		    }
-		    catch (Exception e)
+		    catch
 		    {
-			    Console.WriteLine(e);
+			    Console.WriteLine("Ошибка при копировании!");
+			    run();
 		    }
 	    }
-
-	    private void CopyFiles(string oldPath, string newPath)
-	    {
-		    foreach (var file in Directory.GetFiles(oldPath, "*.*", SearchOption.AllDirectories))
-			    File.Copy(file, newPath.Replace(oldPath, newPath), true);
-		}
     }
 }
