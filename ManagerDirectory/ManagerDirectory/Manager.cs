@@ -40,6 +40,8 @@ namespace ManagerDirectory
 					case "cd":
 						Move();
 						break;
+					case "info":
+						break;
 			    }
 		    }
 		    catch
