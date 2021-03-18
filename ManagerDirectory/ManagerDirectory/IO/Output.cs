@@ -11,6 +11,10 @@ namespace ManagerDirectory.IO
     {
 	    private DirectoryInfo _directory;
 
+	    /// <summary>
+		/// Выводит список директорий и файлов
+		/// </summary>
+		/// <param name="path">Путь</param>
 	    public void OutputTree(string path)
 	    {
 		    try
@@ -19,7 +23,15 @@ namespace ManagerDirectory.IO
 			    _directory = new DirectoryInfo(newPath);
 			    Console.WriteLine(" " + newPath);
 			    foreach (var directory in _directory.GetDirectories())
-				    Console.WriteLine($" |{new string('-', newPath.Length)}{directory.Name.Replace($"{newPath}", "")}");
+				    Console.WriteLine($" |{new string('-', newPath.Length)}{directory.Name}");
+
+			    foreach (var file in _directory.GetFiles())
+			    {
+					Console.Write($" |{new string('-', newPath.Length + 1)}");
+				    Console.ForegroundColor = ConsoleColor.DarkGreen;
+				    Console.Write($"{file.Name}\n");
+					Console.ResetColor();
+				}
 			}
 		    catch (Exception e)
 		    {

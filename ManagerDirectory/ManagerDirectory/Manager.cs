@@ -13,7 +13,12 @@ namespace ManagerDirectory
 		    Console.Title = "ManagerDirectory";
 
 			string path = _input.InputCommand();
-			_output.OutputTree(path);
+			CallOutput(path);
 	    }
+
+		private void CallOutput(string path)
+		{
+			_output.OutputTree(path);
+		}
     }
 }
