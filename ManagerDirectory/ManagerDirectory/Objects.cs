@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ManagerDirectory.Actions;
 using ManagerDirectory.IO;
+using ManagerDirectory.Repository;
 using ManagerDirectory.Serialization;
 
 namespace ManagerDirectory
@@ -14,17 +15,19 @@ namespace ManagerDirectory
 	    protected InputData _input;
 	    protected Output _output;
 	    protected Copying _copying;
+	    protected Moving _moving;
 	    protected Serializer _serializer;
 	    protected Deserializer _deserializer;
 
 
-	    public Objects()
+	    protected Objects()
 	    {
 		    _serializer = new Serializer();
 		    _deserializer = new Deserializer();
 		    _input = new InputData();
 		    _output = new Output();
 		    _copying = new Copying();
+		    _moving = new Moving();
 	    }
     }
 }

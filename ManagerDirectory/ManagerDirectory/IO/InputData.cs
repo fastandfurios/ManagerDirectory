@@ -13,11 +13,11 @@ namespace ManagerDirectory.IO
 	    private string _empty;
 	    private Checker _checker = new Checker();
 
-	    public string Input()
+	    public string Input(string defaultPath)
 	    {
 		    do
 		    {
-				Console.Write("c:\\ ");
+				Console.Write($"{defaultPath} > ");
 				_empty = Console.ReadLine();
 			} while (!_checker.CheckInputCommand(_empty));
 

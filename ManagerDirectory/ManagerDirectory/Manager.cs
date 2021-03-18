@@ -9,10 +9,11 @@ namespace ManagerDirectory
     public class Manager : Objects
     {
 	    private string _empty;
+	    private string _defaultPath = "c:\\";
 
 	    public void Run()
 	    {
-		    _empty = _input.Input();
+		    _empty = _input.Input(_defaultPath);
 
 			ToDistribute();
 	    }
@@ -22,20 +23,22 @@ namespace ManagerDirectory
 		    try
 		    {
 			    string command = _empty.Split(" ")[0];
-			    string path = _empty.Split(" ")[1];
-			    string newPath = _empty.Split(" ")[2];
+			    string path = string.Empty;
+			    string newPath = string.Empty;
 
 			    switch (command)
 			    {
 				    case "ls":
-					    CallOutput(path);
+					    path = _empty.Length == 2 ? _defaultPath : _empty.Split(" ")[1];
+						CallOutput(path);
 					    break;
 				    case "cp":
-					    CallCopying(path, newPath);
+						path = _empty.Split(" ")[1];
+						newPath = _empty.Split(" ")[2];
+						CallCopying(path, newPath);
 					    break;
 					case "clear":
 						Console.Clear();
-						Run();
 						break;
 					case "cd":
 						Move();
@@ -43,10 +46,12 @@ namespace ManagerDirectory
 					case "info":
 						break;
 			    }
+
+				if(command != "exit")
+					Run();
 		    }
 		    catch
 		    {
-				Console.Clear();
 			    Run();
 		    }
 	    }
@@ -63,7 +68,7 @@ namespace ManagerDirectory
 
 		private void Move()
 		{
-
+			_moving.Move();
 		}
     }
 }

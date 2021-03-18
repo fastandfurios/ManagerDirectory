@@ -18,8 +18,7 @@ namespace ManagerDirectory.Validation
 				if (command == nameCommand.Split(" ")[0] && nameCommand != string.Empty)
 					return true;
 			}
-
-			Console.Clear();
+			
 			return false;
 		}
 	}
