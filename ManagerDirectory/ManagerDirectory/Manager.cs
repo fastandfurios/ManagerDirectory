@@ -52,6 +52,9 @@ namespace ManagerDirectory
 						break;
 					case "info":
 						break;
+					case "rm":
+						_deletion.Path = _empty.Split(" ")[1];
+						break;
 			    }
 
 				if(command != "exit")

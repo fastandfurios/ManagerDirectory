@@ -33,6 +33,7 @@ namespace ManagerDirectory.Actions
 		    }
 		    catch
 		    {
+				//TODO переделать вызов метода
 			    Console.WriteLine("Ошибка при копировании!");
 			    run();
 		    }
