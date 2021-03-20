@@ -9,40 +9,46 @@ namespace ManagerDirectory
 {
     public class Manager : Objects
     {
-	    private string _empty;
+	    private string _entry;
 	    private string _defaultPath = "c:\\";
 
+		/// <summary>
+		/// Запускает программу
+		/// </summary>
 	    public void Run()
 	    {
-		    _empty = _input.Input(_defaultPath);
+		    _entry = _input.Input(_defaultPath);
 
 			ToDistribute();
 	    }
 
+		/// <summary>
+		/// Управляет всей программой
+		/// </summary>
 	    private void ToDistribute()
 	    {
 		    try
 		    {
-			    string command = _empty.Split(" ")[0];
+			    string command = _entry.Split(" ")[0];
 			    string path = string.Empty;
 			    string newPath = string.Empty;
 
 			    switch (command)
 			    {
 				    case "ls":
-					    path = _empty.Length == 2 ? _defaultPath : _empty.Split(" ")[1];
+					    path = _entry.Length == 2 ? _defaultPath : _entry.Split(" ")[1];
 						CallOutput(path);
 					    break;
 				    case "cp":
-						path = _empty.Split(" ")[1];
-						newPath = _empty.Split(" ")[2];
+						path = _entry.Split(" ")[1];
+						newPath = _entry.Split(" ")[2];
 						CallCopying(path, newPath);
 					    break;
 					case "clear":
 						Console.Clear();
 						break;
 					case "cd":
-						_defaultPath = _defaultPath + _empty.Split(" ")[1] + "\\";
+						_defaultPath = _defaultPath + _entry.Split(" ")[1] + "\\";
 						break;
 					case "cd..":
 						_defaultPath = Directory.GetParent(_defaultPath.Remove(_defaultPath.Length-1, 1)).FullName;
@@ -53,7 +59,7 @@ namespace ManagerDirectory
 					case "info":
 						break;
 					case "rm":
-						_deletion.Path = _empty.Split(" ")[1];
+						CallDeletion();
 						break;
 			    }
 
@@ -66,14 +72,40 @@ namespace ManagerDirectory
 		    }
 	    }
 
+		/// <summary>
+		/// Вызывает вывод
+		/// </summary>
+		/// <param name="path">Путь</param>
 		private void CallOutput(string path)
 		{
 			_output.OutputTree(path);
 		}
 
+		/// <summary>
+		/// Вызывает копирование
+		/// </summary>
+		/// <param name="name">Имя удаляемого файла или папки</param>
+		/// <param name="newPath">Путь, по которому производится копирование</param>
 		private void CallCopying(string name, string newPath)
 		{
-			_copying.Copy(_defaultPath, name, newPath, Run);
+			_copying.Copy(_defaultPath, name, newPath);
+		}
+
+		/// <summary>
+		/// Вызывает удаление
+		/// </summary>
+		private void CallDeletion()
+		{
+			string entry = _entry.Split(" ")[1];
+
+			if (!entry.Contains("\\"))
+				entry = _defaultPath + entry;
+
+
+			if (Path.GetExtension(entry) != string.Empty)
+				_deletion.FullPathFile = entry;
+			else
+				_deletion.FullPathDirectory = entry;
 		}
     }
 }

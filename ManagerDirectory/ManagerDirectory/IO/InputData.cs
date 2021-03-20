@@ -10,7 +10,7 @@ namespace ManagerDirectory.IO
 {
     public class InputData
     {
-	    private string _empty;
+	    private string _entry;
 	    private Checker _checker = new Checker();
 
 	    public string Input(string defaultPath)
@@ -18,10 +18,10 @@ namespace ManagerDirectory.IO
 		    do
 		    {
 				Console.Write($"{defaultPath} > ");
-				_empty = Console.ReadLine();
-			} while (!_checker.CheckInputCommand(_empty));
+				_entry = Console.ReadLine();
+			} while (!_checker.CheckInputCommand(_entry));
 
-		    return _empty;
+		    return _entry;
 	    }
     }
 }

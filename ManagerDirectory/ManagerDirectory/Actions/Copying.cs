@@ -9,11 +9,11 @@ namespace ManagerDirectory.Actions
 {
     public class Copying
     {
-	    public void Copy(string oldPath, string name, string newPath, Action run)
+	    public void Copy(string oldPath, string name, string newPath)
 	    {
 		    try
 		    {
-			    if (name.Contains('.'))
+			    if (Path.GetExtension(name) != string.Empty)
 			    {
 				    foreach (var file in Directory.GetFiles(oldPath, name, SearchOption.TopDirectoryOnly))
 					    File.Copy(file, file.Replace(oldPath, newPath), true);
@@ -35,7 +35,6 @@ namespace ManagerDirectory.Actions
 		    {
 				//TODO переделать вызов метода
 			    Console.WriteLine("Ошибка при копировании!");
-			    run();
 		    }
 	    }
     }
