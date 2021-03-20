@@ -11,12 +11,17 @@ namespace ManagerDirectory
     {
 	    private string _entry;
 	    private string _defaultPath = "c:\\";
+	    private string _fileName = "CurrentPath.json";
 
 		/// <summary>
 		/// Запускает программу
 		/// </summary>
 	    public void Run()
 	    {
+			//TODO исправить метод Run()
+		    if (File.Exists(_fileName))
+			    _defaultPath = _deserializer.Deserialize(_fileName, _defaultPath);
+
 		    _entry = _input.Input(_defaultPath);
 
 			ToDistribute();
@@ -51,7 +56,7 @@ namespace ManagerDirectory
 						_defaultPath = _defaultPath + _entry.Split(" ")[1] + "\\";
 						break;
 					case "cd..":
-						_defaultPath = Directory.GetParent(_defaultPath.Remove(_defaultPath.Length-1, 1)).FullName;
+						_defaultPath = Directory.GetParent(_defaultPath.Remove(_defaultPath.Length - 1, 1)).FullName;
 						break;
 					case "cd\\":
 						_defaultPath = Directory.GetDirectoryRoot(_defaultPath);
@@ -65,6 +70,8 @@ namespace ManagerDirectory
 
 				if(command != "exit")
 					Run();
+				else 
+					_serializer.Serialize(_defaultPath, _fileName);
 		    }
 		    catch
 		    {
