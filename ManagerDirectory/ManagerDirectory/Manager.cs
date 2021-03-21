@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ManagerDirectory.Models;
 
 namespace ManagerDirectory
 {
@@ -13,16 +14,23 @@ namespace ManagerDirectory
 	    private string _defaultPath = "c:\\";
 	    private string _fileName = "CurrentPath.json";
 
-		/// <summary>
-		/// Запускает программу
-		/// </summary>
-	    public void Run()
-	    {
-			//TODO исправить метод Run()
-		    if (File.Exists(_fileName))
-			    _defaultPath = _deserializer.Deserialize(_fileName, _defaultPath);
+		public Manager()
+		{
+			Start();
+			Run();
+		}
 
-		    _entry = _input.Input(_defaultPath);
+		/// <summary>
+		/// Начинает программу
+		/// </summary>
+		private void Start() => _currentPath = _deserializer.Deserialize(_fileName);
+
+	    private void Run()
+	    {
+			if (File.Exists(_fileName) && !string.IsNullOrEmpty(_currentPath.Path))
+				_defaultPath = _currentPath.Path;
+
+			_entry = _input.Input(_defaultPath);
 
 			ToDistribute();
 	    }
@@ -68,10 +76,16 @@ namespace ManagerDirectory
 						break;
 			    }
 
-				if(command != "exit")
-					Run();
-				else 
-					_serializer.Serialize(_defaultPath, _fileName);
+			    if (command != "exit")
+			    {
+				    _currentPath.Path = string.Empty;
+				    Run();
+				}
+			    else
+			    {
+				    _currentPath.Path = _defaultPath;
+				    _serializer.Serialize(_currentPath, _fileName);
+				}
 		    }
 		    catch
 		    {

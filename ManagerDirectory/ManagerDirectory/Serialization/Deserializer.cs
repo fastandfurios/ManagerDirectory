@@ -13,19 +13,19 @@ namespace ManagerDirectory.Serialization
     {
 	    private string _currentPath;
 
-		public string Deserialize(string fileName, string defaultPath)
+		public CurrentPath Deserialize(string fileName)
 		{
 			try
 			{
 				_currentPath = File.ReadAllText(fileName);
-				return JsonSerializer.Deserialize<CurrentPath>(_currentPath).Path;
+				return JsonSerializer.Deserialize<CurrentPath>(_currentPath);
 			}
 			catch (Exception e)
 			{
 				Console.WriteLine(e);
 			}
 
-			return defaultPath;
+			return default;
 		}
 	}
 }

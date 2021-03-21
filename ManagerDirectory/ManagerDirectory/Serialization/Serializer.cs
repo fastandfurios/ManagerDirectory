@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ManagerDirectory.Models;
 
 namespace ManagerDirectory.Serialization
 {
@@ -12,7 +13,7 @@ namespace ManagerDirectory.Serialization
     {
 	    private string _currentPath;
 
-	    public void Serialize(string currentPath, string fileName)
+	    public void Serialize(CurrentPath currentPath, string fileName)
 	    {
 		    try
 		    {
