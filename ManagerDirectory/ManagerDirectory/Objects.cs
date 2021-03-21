@@ -20,6 +20,7 @@ namespace ManagerDirectory
 	    protected Serializer _serializer;
 	    protected Deserializer _deserializer;
 	    protected CurrentPath _currentPath;
+	    protected Informer _informer;
 
 
 	    protected Objects()
@@ -30,7 +31,8 @@ namespace ManagerDirectory
 		    _output = new Output();
 		    _copying = new Copying();
 		    _deletion = new Deletion();
-		    _currentPath = new CurrentPath();
+			_currentPath = new CurrentPath();
+			_informer = new Informer();
 	    }
     }
 }

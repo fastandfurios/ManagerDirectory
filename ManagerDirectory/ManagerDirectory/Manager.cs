@@ -70,6 +70,8 @@ namespace ManagerDirectory
 						_defaultPath = Directory.GetDirectoryRoot(_defaultPath);
 						break;
 					case "info":
+						CallInformer();
+						_output.OutputInfoFilesAndDirectory(_informer);
 						break;
 					case "rm":
 						CallDeletion();
@@ -117,16 +119,37 @@ namespace ManagerDirectory
 		/// </summary>
 		private void CallDeletion()
 		{
-			string entry = _entry.Split(" ")[1];
-
-			if (!entry.Contains("\\"))
-				entry = _defaultPath + entry;
-
+			string entry = GetPath(_entry.Split(" ")[1]);
 
 			if (Path.GetExtension(entry) != string.Empty)
 				_deletion.FullPathFile = entry;
 			else
 				_deletion.FullPathDirectory = entry;
+		}
+
+		/// <summary>
+		/// Вызывает информатор объектов
+		/// </summary>
+		private void CallInformer()
+		{
+			string entry = GetPath(_entry.Split(" ")[1]);
+
+			if (Path.GetExtension(entry) != string.Empty)
+				_informer.FullPathFile = entry;
+			else
+				_informer.FullPathDirectory = entry;
+		}
+
+		/// <summary>
+		/// Преобразует путь
+		/// </summary>
+		/// <returns>Абсолютный путь</returns>
+		private string GetPath(string entry)
+		{
+			if (!entry.Contains("\\"))
+				return entry = _defaultPath + entry;
+
+			return default;
 		}
     }
 }
