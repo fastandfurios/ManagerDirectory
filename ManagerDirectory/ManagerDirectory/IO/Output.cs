@@ -21,21 +21,27 @@ namespace ManagerDirectory.IO
 	    public void OutputTree(string path)
 	    {
 		    _directory = new DirectoryInfo(path);
-		    Console.ForegroundColor = ConsoleColor.Yellow;
-		    Console.WriteLine(" " + path);
-		    Console.ResetColor();
-		    foreach (var directory in _directory.GetDirectories())
+		    int length = _directory.Name.Length / 2;
+		    int spaceLength;
+		    var arraySelector = path.Where(s => s == '\\').Select(s => s = '\\').ToList();
+
+			if (arraySelector.Count > 2)
+				OutputTree(" ~\\" + _directory.Name, arraySelector, _directory.Name.Length / 2 + 2, out spaceLength);
+		    else
+				OutputTree(" " + path, arraySelector, path.Length - length, out spaceLength);
+			
+			foreach (var directory in _directory.GetDirectories())
 		    {
 			    if (_countDirectory < MAX_OBJECTS)
 			    {
 				    Console.WriteLine(
-					    $"{new string(' ', path.Length / 2)}|{new string('-', path.Length - path.Length / 2)}{directory.Name}");
+					    $"{new string(' ', spaceLength)}|{new string('-', length + 1)}{directory.Name}");
 				    _countDirectory++;
 			    }
 			    else
 			    {
 				    Console.WriteLine(
-					    $"{new string(' ', path.Length / 2)}|{new string('-', path.Length - path.Length / 2)}...");
+					    $"{new string(' ', spaceLength)}|{new string('-', length + 1)}...");
 				    break;
 			    }
 		    }
@@ -47,7 +53,7 @@ namespace ManagerDirectory.IO
 			    if (_countFiles < MAX_OBJECTS)
 			    {
 				    Console.Write(
-					    $"{new string(' ', path.Length / 2)}|{new string('-', path.Length + 1 - path.Length / 2)}");
+					    $"{new string(' ', spaceLength)}|{new string('-', length + 1)}");
 				    Console.ForegroundColor = ConsoleColor.DarkGreen;
 				    Console.Write($"{file.Name}\n");
 				    Console.ResetColor();
@@ -56,12 +62,21 @@ namespace ManagerDirectory.IO
 			    else
 			    {
 				    Console.Write(
-					    $"{new string(' ', path.Length / 2)}|{new string('-', path.Length + 1 - path.Length / 2)}...\n");
+					    $"{new string(' ', spaceLength)}|{new string('-', length + 1)}...\n");
 				    break;
 			    }
 		    }
 
 			_countFiles = 0;
+		}
+
+	    private void OutputTree(string str, List<char> arraySelector, int exp, out int spaceLength )
+	    {
+		    Console.ForegroundColor = ConsoleColor.Yellow;
+		    Console.WriteLine(str);
+		    Console.ResetColor();
+		    spaceLength = exp;
+		    arraySelector.RemoveRange(0, arraySelector.Count);
 		}
 
 	    public void OutputInfoFilesAndDirectory(Informer informer) => Console.WriteLine(informer);

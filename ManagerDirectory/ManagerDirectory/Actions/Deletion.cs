@@ -22,16 +22,9 @@ namespace ManagerDirectory.Actions
 
 				Delete();
 
-				try
-				{
-					Directory.Delete(_fullPathDirectory);
-					Console.WriteLine("Удаление прошло успешно!");
-				}
-				catch (Exception a)
-				{
-					Console.WriteLine(a);
-				}
-			} 
+				Directory.Delete(_fullPathDirectory);
+				Console.WriteLine("Удаление прошло успешно!");
+		    } 
 	    }
 
 	    private string _fullPathFile;
@@ -42,15 +35,8 @@ namespace ManagerDirectory.Actions
 		    {
 			    _fullPathFile = value;
 
-			    try
-			    {
-				    File.Delete(_fullPathFile);
-				    Console.WriteLine("Удаление прошло успешно!");
-				}
-			    catch (Exception e)
-			    {
-				    Console.WriteLine(e);
-			    }
+			    File.Delete(_fullPathFile);
+			    Console.WriteLine("Удаление прошло успешно!");
 			}
 	    }
 
@@ -59,27 +45,24 @@ namespace ManagerDirectory.Actions
 		/// </summary>
         private void Delete()
 		{
-			try
-			{
-				_countFiles = Directory.GetFiles(_fullPathDirectory, "*.*", SearchOption.AllDirectories).Length;
-				_countDirectory = Directory.GetDirectories(_fullPathDirectory, "*", SearchOption.AllDirectories).Length;
+			_countFiles = Directory.GetFiles(_fullPathDirectory, "*.*", SearchOption.AllDirectories).Length;
+			_countDirectory = Directory.GetDirectories(_fullPathDirectory, "*", SearchOption.AllDirectories).Length;
 
-				if (_countFiles != 0)
-				{
-					File.Delete(Directory.GetFiles(_fullPathDirectory, "*.*", SearchOption.AllDirectories)[_countFiles - 1]);
-					Delete();
-				}
-
-				if (_countDirectory != 0)
-				{
-					Directory.Delete(Directory.GetDirectories(_fullPathDirectory, "*", SearchOption.AllDirectories)[_countDirectory - 1]);
-					Delete();
-				}
-			}
-			catch (Exception e)
+			if (_countFiles != 0)
 			{
-				Console.WriteLine(e);
+				File.Delete(
+					Directory.GetFiles(_fullPathDirectory, "*.*", SearchOption.AllDirectories)[_countFiles - 1]);
+				Delete();
 			}
+
+			if (_countDirectory != 0)
+			{
+				Directory.Delete(
+					Directory.GetDirectories(_fullPathDirectory, "*",
+						SearchOption.AllDirectories)[_countDirectory - 1]);
+				Delete();
+			}
+			
 		}
     }
 }

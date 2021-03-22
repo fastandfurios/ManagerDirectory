@@ -37,7 +37,7 @@ namespace ManagerDirectory.Validation
 		public string CheckPath(string path, string defaultPath)
 		{
 			if (Directory.Exists(defaultPath + path))
-				return Path.Combine(defaultPath, path);
+				return defaultPath + path;
 
 			return defaultPath;
 		}

@@ -50,7 +50,7 @@ namespace ManagerDirectory
 			    switch (command)
 			    {
 				    case "ls":
-					    path = _entry.Length == 2 ? _defaultPath : _entry.Split(" ")[1];
+					    path = _entry.Length == 2 ? _defaultPath : _entry.Remove(0, _entry.Split(" ")[0].Length + 1);
 						CallOutput(path);
 					    break;
 				    case "cp":
@@ -62,7 +62,7 @@ namespace ManagerDirectory
 						Console.Clear();
 						break;
 					case "cd":
-						_defaultPath = _checker.CheckPath(_entry.Split(" ")[1] + "\\", _defaultPath);
+						_defaultPath = _checker.CheckPath( _entry.Split(" ")[1] + "\\", _defaultPath);
 						break;
 					case "cd..":
 						_defaultPath = Directory.GetParent(_defaultPath.Remove(_defaultPath.Length - 1, 1))?.FullName;
