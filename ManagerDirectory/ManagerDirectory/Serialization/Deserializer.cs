@@ -15,17 +15,8 @@ namespace ManagerDirectory.Serialization
 
 		public CurrentPath Deserialize(string fileName)
 		{
-			try
-			{
-				_currentPath = File.ReadAllText(fileName);
-				return JsonSerializer.Deserialize<CurrentPath>(_currentPath);
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
-			}
-
-			return default;
+			_currentPath = File.ReadAllText(fileName);
+			return JsonSerializer.Deserialize<CurrentPath>(_currentPath);
 		}
 	}
 }

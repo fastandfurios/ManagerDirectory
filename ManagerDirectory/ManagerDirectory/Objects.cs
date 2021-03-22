@@ -8,6 +8,7 @@ using ManagerDirectory.IO;
 using ManagerDirectory.Models;
 using ManagerDirectory.Repository;
 using ManagerDirectory.Serialization;
+using ManagerDirectory.Validation;
 
 namespace ManagerDirectory
 {
@@ -21,9 +22,10 @@ namespace ManagerDirectory
 	    protected Deserializer _deserializer;
 	    protected CurrentPath _currentPath;
 	    protected Informer _informer;
+	    protected Checker _checker;
 
 
-	    protected Objects()
+		protected Objects()
 	    {
 		    _serializer = new Serializer();
 		    _deserializer = new Deserializer();
@@ -33,6 +35,7 @@ namespace ManagerDirectory
 		    _deletion = new Deletion();
 			_currentPath = new CurrentPath();
 			_informer = new Informer();
-	    }
+			_checker = new Checker();
+		}
     }
 }

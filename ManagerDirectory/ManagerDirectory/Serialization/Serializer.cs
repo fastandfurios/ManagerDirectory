@@ -15,15 +15,8 @@ namespace ManagerDirectory.Serialization
 
 	    public void Serialize(CurrentPath currentPath, string fileName)
 	    {
-		    try
-		    {
-			    _currentPath = JsonSerializer.Serialize(currentPath);
-				File.WriteAllText(fileName, _currentPath);
-		    }
-		    catch (Exception e)
-		    {
-			    Console.WriteLine(e);
-		    }
+		    _currentPath = JsonSerializer.Serialize(currentPath);
+		    File.WriteAllText(fileName, _currentPath);
 	    }
     }
 }

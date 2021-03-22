@@ -11,15 +11,14 @@ namespace ManagerDirectory.IO
     public class InputData
     {
 	    private string _entry;
-	    private Checker _checker = new Checker();
 
-	    public string Input(string defaultPath)
+	    public string Input(string defaultPath, Checker checker)
 	    {
 		    do
 		    {
 				Console.Write($"{defaultPath} > ");
 				_entry = Console.ReadLine();
-			} while (!_checker.CheckInputCommand(_entry));
+			} while (!checker.CheckInputCommand(_entry));
 
 		    return _entry;
 	    }

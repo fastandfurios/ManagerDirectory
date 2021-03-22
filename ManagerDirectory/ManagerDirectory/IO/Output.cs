@@ -20,46 +20,43 @@ namespace ManagerDirectory.IO
 		/// <param name="path">Путь</param>
 	    public void OutputTree(string path)
 	    {
-		    try
+		    _directory = new DirectoryInfo(path);
+		    Console.ForegroundColor = ConsoleColor.Yellow;
+		    Console.WriteLine(" " + path);
+		    Console.ResetColor();
+		    foreach (var directory in _directory.GetDirectories())
 		    {
-			    _directory = new DirectoryInfo(path);
-			    Console.ForegroundColor = ConsoleColor.Yellow;
-			    Console.WriteLine(" " + path);
-				Console.ResetColor();
-				foreach (var directory in _directory.GetDirectories())
-				{
-					if(_countDirectory < MAX_OBJECTS)
-					{
-						Console.WriteLine($"{new string(' ', path.Length / 2)}|{new string('-', path.Length - path.Length / 2)}{directory.Name}");
-						_countDirectory++;
-					}
-					else
-					{
-						Console.WriteLine($"{new string(' ', path.Length / 2)}|{new string('-', path.Length - path.Length / 2)}...");
-						break;
-					}
-				}
-				
-			    foreach (var file in _directory.GetFiles())
+			    if (_countDirectory < MAX_OBJECTS)
 			    {
-				    if (_countFiles < MAX_OBJECTS)
-				    {
-					    Console.Write($"{new string(' ', path.Length / 2)}|{new string('-', path.Length + 1 - path.Length / 2)}");
-					    Console.ForegroundColor = ConsoleColor.DarkGreen;
-					    Console.Write($"{file.Name}\n");
-					    Console.ResetColor();
-					    _countFiles++;
-				    }
-				    else
-				    {
-						Console.Write($"{new string(' ', path.Length / 2)}|{new string('-', path.Length + 1 - path.Length / 2)}...\n");
-						break;
-					}
-				}
-			}
-		    catch (Exception e)
+				    Console.WriteLine(
+					    $"{new string(' ', path.Length / 2)}|{new string('-', path.Length - path.Length / 2)}{directory.Name}");
+				    _countDirectory++;
+			    }
+			    else
+			    {
+				    Console.WriteLine(
+					    $"{new string(' ', path.Length / 2)}|{new string('-', path.Length - path.Length / 2)}...");
+				    break;
+			    }
+		    }
+
+		    foreach (var file in _directory.GetFiles())
 		    {
-			    Console.WriteLine(e);
+			    if (_countFiles < MAX_OBJECTS)
+			    {
+				    Console.Write(
+					    $"{new string(' ', path.Length / 2)}|{new string('-', path.Length + 1 - path.Length / 2)}");
+				    Console.ForegroundColor = ConsoleColor.DarkGreen;
+				    Console.Write($"{file.Name}\n");
+				    Console.ResetColor();
+				    _countFiles++;
+			    }
+			    else
+			    {
+				    Console.Write(
+					    $"{new string(' ', path.Length / 2)}|{new string('-', path.Length + 1 - path.Length / 2)}...\n");
+				    break;
+			    }
 		    }
 	    }
 

@@ -13,6 +13,7 @@ namespace ManagerDirectory
 	    private string _entry;
 	    private string _defaultPath = "c:\\";
 	    private string _fileName = "CurrentPath.json";
+	    private string _fileLogErrors = "LogErrors.txt";
 
 		public Manager()
 		{
@@ -30,7 +31,7 @@ namespace ManagerDirectory
 			if (File.Exists(_fileName) && !string.IsNullOrEmpty(_currentPath.Path))
 				_defaultPath = _currentPath.Path;
 
-			_entry = _input.Input(_defaultPath);
+			_entry = _input.Input(_defaultPath, _checker);
 
 			ToDistribute();
 	    }
@@ -61,7 +62,7 @@ namespace ManagerDirectory
 						Console.Clear();
 						break;
 					case "cd":
-						_defaultPath = _defaultPath + _entry.Split(" ")[1] + "\\";
+						_defaultPath = _checker.CheckPath(_entry.Split(" ")[1] + "\\", _defaultPath);
 						break;
 					case "cd..":
 						_defaultPath = Directory.GetParent(_defaultPath.Remove(_defaultPath.Length - 1, 1)).FullName;
@@ -89,8 +90,11 @@ namespace ManagerDirectory
 				    _serializer.Serialize(_currentPath, _fileName);
 				}
 		    }
-		    catch
+		    catch (Exception e)
 		    {
+			    Console.WriteLine(e.Message);
+				File.AppendAllText(_fileLogErrors, e.Message);
+				File.AppendAllText(_fileLogErrors, Environment.NewLine);
 			    Run();
 		    }
 	    }
@@ -101,7 +105,7 @@ namespace ManagerDirectory
 		/// <param name="path">Путь</param>
 		private void CallOutput(string path)
 		{
-			_output.OutputTree(path);
+			_output.OutputTree(_checker.CheckPath(path, _defaultPath));
 		}
 
 		/// <summary>
@@ -149,7 +153,7 @@ namespace ManagerDirectory
 			if (!entry.Contains("\\"))
 				return entry = _defaultPath + entry;
 
-			return default;
+			return _defaultPath;
 		}
     }
 }

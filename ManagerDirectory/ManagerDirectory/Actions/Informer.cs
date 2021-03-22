@@ -25,17 +25,25 @@ namespace ManagerDirectory.Actions
 
 	    public override string ToString()
 	    {
-		    var fileInfo = new FileInfo(_fullPathFile);
-
 		    if (!string.IsNullOrEmpty(_fullPathDirectory))
 		    {
-			    return $"";
+			    var directoryInfo = new DirectoryInfo(_fullPathDirectory);
+				int countDirectory = directoryInfo.GetDirectories("*", SearchOption.AllDirectories).Length;
+			    int countFiles = directoryInfo.GetFiles("*.*", SearchOption.AllDirectories).Length;
+			    long size = 0;
+				foreach (var file in directoryInfo.GetFiles("*.*", SearchOption.AllDirectories))
+					size += file.Length;
+				//TODO размер поправить
+			    return $"Количество папок: {countDirectory}\n" +
+			           $"Количество файлов: {countFiles}\n" +
+			           $"Размер: {size} байт";
 		    }
 		    else
 		    {
-			    return $"Имя: {Path.GetFileNameWithoutExtension(_fullPathFile)}\n" +
+			    var fileInfo = new FileInfo(_fullPathFile);
+				return $"Имя: {Path.GetFileNameWithoutExtension(_fullPathFile)}\n" +
 			           $"Расширение: {fileInfo.Extension}\n" +
-			           $"Объем занимаемой памяти: {fileInfo.Length} байт";
+			           $"Размер: {fileInfo.Length} байт";
 		    }
 	    }
     }
