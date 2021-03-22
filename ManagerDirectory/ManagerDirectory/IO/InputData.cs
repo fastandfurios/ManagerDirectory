@@ -12,6 +12,12 @@ namespace ManagerDirectory.IO
     {
 	    private string _entry;
 
+		/// <summary>
+		/// Дает пользователю ввести строку
+		/// </summary>
+		/// <param name="defaultPath">Путь по умолчанию</param>
+		/// <param name="checker">Проверщик</param>
+		/// <returns>Строка, введенная пользователем</returns>
 	    public string Input(string defaultPath, Checker checker)
 	    {
 		    do

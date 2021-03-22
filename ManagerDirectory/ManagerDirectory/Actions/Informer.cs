@@ -31,20 +31,41 @@ namespace ManagerDirectory.Actions
 				int countDirectory = directoryInfo.GetDirectories("*", SearchOption.AllDirectories).Length;
 			    int countFiles = directoryInfo.GetFiles("*.*", SearchOption.AllDirectories).Length;
 			    long size = 0;
+
 				foreach (var file in directoryInfo.GetFiles("*.*", SearchOption.AllDirectories))
 					size += file.Length;
-				//TODO размер поправить
+
 			    return $"Количество папок: {countDirectory}\n" +
 			           $"Количество файлов: {countFiles}\n" +
-			           $"Размер: {size} байт";
+			           $"Размер: {Converter(size)}";
 		    }
 		    else
 		    {
 			    var fileInfo = new FileInfo(_fullPathFile);
+
 				return $"Имя: {Path.GetFileNameWithoutExtension(_fullPathFile)}\n" +
 			           $"Расширение: {fileInfo.Extension}\n" +
-			           $"Размер: {fileInfo.Length} байт";
+			           $"Размер: {Converter(fileInfo.Length)}";
 		    }
 	    }
+
+		/// <summary>
+		/// Конвертирует размер файлов и папок в читаемый вид
+		/// </summary>
+		/// <param name="size">Размерность</param>
+		/// <returns>Готовая строка</returns>
+		private string Converter(long size)
+		{
+			if (size < 1024)
+				return $"{size.ToString()} B";
+			else if (1024 < size && size < 1_048_576)
+				return $"{((double)size / 1024).ToString("F")} KB";
+			else if (1_048_576 < size && size < 1_073_741_824)
+				return $"{((double)size / 1_048_576).ToString("F")} MB";
+			else if (size > 1_073_741_824)
+				return $"{((double)size / 1_073_741_824).ToString("F")} GB";
+
+			return default;
+		}
     }
 }

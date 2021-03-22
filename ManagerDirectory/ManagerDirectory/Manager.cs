@@ -136,8 +136,14 @@ namespace ManagerDirectory
 		/// </summary>
 		private void CallInformer()
 		{
-			string entry = GetPath(_entry.Split(" ")[1]);
+			string entry = string.Empty;
 
+			if (_entry.Length == 4)
+				entry = _defaultPath;
+			else
+				entry = GetPath(_entry.Split(" ")[1]);
+			
+			
 			if (Path.GetExtension(entry) != string.Empty)
 				_informer.FullPathFile = entry;
 			else
