@@ -40,7 +40,9 @@ namespace ManagerDirectory.IO
 			    }
 		    }
 
-		    foreach (var file in _directory.GetFiles())
+		    _countDirectory = 0;
+
+			foreach (var file in _directory.GetFiles())
 		    {
 			    if (_countFiles < MAX_OBJECTS)
 			    {
@@ -58,7 +60,9 @@ namespace ManagerDirectory.IO
 				    break;
 			    }
 		    }
-	    }
+
+			_countFiles = 0;
+		}
 
 	    public void OutputInfoFilesAndDirectory(Informer informer) => Console.WriteLine(informer);
     }

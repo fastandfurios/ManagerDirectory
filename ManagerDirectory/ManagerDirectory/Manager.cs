@@ -65,7 +65,7 @@ namespace ManagerDirectory
 						_defaultPath = _checker.CheckPath(_entry.Split(" ")[1] + "\\", _defaultPath);
 						break;
 					case "cd..":
-						_defaultPath = Directory.GetParent(_defaultPath.Remove(_defaultPath.Length - 1, 1)).FullName;
+						_defaultPath = Directory.GetParent(_defaultPath.Remove(_defaultPath.Length - 1, 1))?.FullName;
 						break;
 					case "cd\\":
 						_defaultPath = Directory.GetDirectoryRoot(_defaultPath);
@@ -92,8 +92,8 @@ namespace ManagerDirectory
 		    }
 		    catch (Exception e)
 		    {
-			    Console.WriteLine(e.Message);
-				File.AppendAllText(_fileLogErrors, e.Message);
+			    Console.WriteLine("Bad request!");
+				File.AppendAllText(_fileLogErrors, $"{DateTime.Now.ToString("G")} {e.Message} {e.TargetSite}" );
 				File.AppendAllText(_fileLogErrors, Environment.NewLine);
 			    Run();
 		    }

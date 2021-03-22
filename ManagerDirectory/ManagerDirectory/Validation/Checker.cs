@@ -38,8 +38,6 @@ namespace ManagerDirectory.Validation
 		{
 			if (Directory.Exists(defaultPath + path))
 				return Path.Combine(defaultPath, path);
-			
-			Console.WriteLine("Bad path!");
 
 			return defaultPath;
 		}
