@@ -86,7 +86,7 @@ namespace ManagerDirectory.IO
 		    var drives = DriveInfo.GetDrives();
 
 		    foreach (var drive in drives)
-			    Console.WriteLine($"Имя диска: {drive.Name}");
+			    Console.WriteLine($"Имя тома: {drive.Name}");
 	    }
 
 	    public void OutputInfoFilesAndDirectory(Informer informer) => Console.WriteLine(informer);
