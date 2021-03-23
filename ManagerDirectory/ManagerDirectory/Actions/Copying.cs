@@ -23,7 +23,7 @@ namespace ManagerDirectory.Actions
 			    foreach (var directory in Directory.GetDirectories(oldPath, name, SearchOption.TopDirectoryOnly))
 				    Directory.CreateDirectory(directory.Replace(oldPath, newPath));
 
-			    foreach (var file in Directory.GetFiles(oldPath, "*.*", SearchOption.TopDirectoryOnly))
+			    foreach (var file in Directory.GetFiles(oldPath + name, "*.*", SearchOption.TopDirectoryOnly))
 				    File.Copy(file, file.Replace(oldPath, newPath), true);
 
 			    Console.WriteLine($"Копирование прошло успешно!");

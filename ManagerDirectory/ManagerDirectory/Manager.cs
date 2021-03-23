@@ -50,12 +50,12 @@ namespace ManagerDirectory
 			    switch (command)
 			    {
 				    case "ls":
-					    path = _entry.Length == 2 ? _defaultPath : _entry.Remove(0, _entry.Split(" ")[0].Length + 1);
+					    path = _entry.Length == 2 ? _defaultPath : _entry.Remove(0, command.Length + 1);
 						CallOutput(path);
 					    break;
 				    case "cp":
-						path = _entry.Split(" ")[1];
-						newPath = _entry.Split(" ")[2];
+						path = Transform(_entry.Remove(0, command.Length + 1)).TrimEnd();
+						newPath = _entry.Remove(0, command.Length + path.Length + 2) + "\\";
 						CallCopying(path, newPath);
 					    break;
 					case "clear":
@@ -160,6 +160,29 @@ namespace ManagerDirectory
 				return entry = _defaultPath + entry;
 
 			return _defaultPath;
+		}
+
+		private string Transform(string str)
+		{
+			for (int i = str.Length - 1; i > 0; i--)
+			{
+				if (str[i] != ':')
+					str = str.Remove(i, 1);
+				else
+				{
+					for (int j = str.Length - 1; j > 0; j--)
+					{
+						if (str[j] != ' ')
+							str = str.Remove(j, 1);
+						else
+							break;
+					}
+
+					break;
+				}
+			}
+
+			return str;
 		}
     }
 }
