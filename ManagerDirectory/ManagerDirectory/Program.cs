@@ -9,7 +9,6 @@ namespace ManagerDirectory
 			Console.Title = "ManagerDirectory";
 
 			var managerDirectory = new Manager();
-			managerDirectory.Run();
 		}
 	}
 }

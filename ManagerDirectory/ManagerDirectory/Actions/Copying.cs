@@ -9,34 +9,25 @@ namespace ManagerDirectory.Actions
 {
     public class Copying
     {
-	    public void Copy(string oldPath, string newPath)
+	    public void Copy(string oldPath, string name, string newPath)
 	    {
-		    try
+		    if (Path.GetExtension(name) != string.Empty)
 		    {
-			    if (oldPath.Contains('.'))
-			    {
-					CopyFiles(oldPath, newPath);
+			    foreach (var file in Directory.GetFiles(oldPath, name, SearchOption.TopDirectoryOnly))
+				    File.Copy(file, file.Replace(oldPath, newPath), true);
 
-					Console.WriteLine($"Копирование прошло успешно!");
-			    }
-			    else
-			    {
-				    foreach (var directory in Directory.GetDirectories(oldPath,"*", SearchOption.TopDirectoryOnly))
-					    Directory.CreateDirectory(directory.Replace(oldPath, newPath));
-
-				    CopyFiles(oldPath, newPath);
-			    }
+			    Console.WriteLine($"Копирование прошло успешно!");
 		    }
-		    catch (Exception e)
+		    else
 		    {
-			    Console.WriteLine(e);
+			    foreach (var directory in Directory.GetDirectories(oldPath, name, SearchOption.TopDirectoryOnly))
+				    Directory.CreateDirectory(directory.Replace(oldPath, newPath));
+
+			    foreach (var file in Directory.GetFiles(oldPath + name, "*.*", SearchOption.TopDirectoryOnly))
+				    File.Copy(file, file.Replace(oldPath, newPath), true);
+
+			    Console.WriteLine($"Копирование прошло успешно!");
 		    }
 	    }
-
-	    private void CopyFiles(string oldPath, string newPath)
-	    {
-		    foreach (var file in Directory.GetFiles(oldPath, "*.*", SearchOption.AllDirectories))
-			    File.Copy(file, newPath.Replace(oldPath, newPath), true);
-		}
     }
 }

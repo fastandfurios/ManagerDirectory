@@ -10,18 +10,23 @@ namespace ManagerDirectory.IO
 {
     public class InputData
     {
-	    private string _empty;
-	    private Checker _checker = new Checker();
+	    private string _entry;
 
-	    public string Input()
+		/// <summary>
+		/// Дает пользователю ввести строку
+		/// </summary>
+		/// <param name="defaultPath">Путь по умолчанию</param>
+		/// <param name="checker">Проверщик</param>
+		/// <returns>Строка, введенная пользователем</returns>
+	    public string Input(string defaultPath, Checker checker)
 	    {
 		    do
 		    {
-				Console.Write("c:\\ ");
-				_empty = Console.ReadLine();
-			} while (!_checker.CheckInputCommand(_empty));
+				Console.Write($"{defaultPath} > ");
+				_entry = Console.ReadLine();
+			} while (!checker.CheckInputCommand(_entry));
 
-		    return _empty;
+		    return _entry;
 	    }
     }
 }

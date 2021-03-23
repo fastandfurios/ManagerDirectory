@@ -10,12 +10,17 @@ namespace ManagerDirectory.Repository
 	{
 		public string[] ArrayCommands => new string[]
 		{
+			"disk",
 			"ls",
+			"lsAll",
 			"cp",
 			"rm",
 			"info",
 			"clear",
-			"cd"
+			"cd",
+			"cd..",
+			"cd\\",
+			"exit"
 		};
 }
 }
