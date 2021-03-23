@@ -26,7 +26,7 @@ namespace ManagerDirectory
 		/// </summary>
 		private void Start()
 		{
-			_currentPath = _deserializer.Deserialize(_fileName);
+			_currentPath = _deserializer.Deserialize(_fileName, _currentPath, _defaultPath);
 
 			foreach (var drive in DriveInfo.GetDrives())
 			{

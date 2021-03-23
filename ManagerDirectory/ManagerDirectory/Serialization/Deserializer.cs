@@ -13,10 +13,17 @@ namespace ManagerDirectory.Serialization
     {
 	    private string _currentPath;
 
-		public CurrentPath Deserialize(string fileName)
+		public CurrentPath Deserialize(string fileName, CurrentPath currentPath, string defaultPath)
 		{
-			_currentPath = File.ReadAllText(fileName);
-			return JsonSerializer.Deserialize<CurrentPath>(_currentPath);
+			try
+			{
+				_currentPath = File.ReadAllText(fileName);
+				return JsonSerializer.Deserialize<CurrentPath>(_currentPath);
+			}
+			catch { }
+
+			currentPath.Path = defaultPath;
+			return currentPath;
 		}
 	}
 }
