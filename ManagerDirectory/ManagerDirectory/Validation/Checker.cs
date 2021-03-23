@@ -38,7 +38,8 @@ namespace ManagerDirectory.Validation
 		{
 			if (Directory.Exists(defaultPath + path))
 				return defaultPath + path;
-
+			else if ((Directory.Exists(path) || File.Exists(path)) && path.Contains('\\'))
+				return path;
 
 			return defaultPath;
 		}

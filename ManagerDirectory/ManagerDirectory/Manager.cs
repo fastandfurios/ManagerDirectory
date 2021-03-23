@@ -51,6 +51,7 @@ namespace ManagerDirectory
 			    {
 				    case "ls":
 					    path = _entry.Length == command.Length ? _defaultPath : _entry.Remove(0, command.Length + 1);
+						path = _checker.CheckPath(path, _defaultPath);
 						CallOutput(path, 10);
 					    break;
 					case "lsAll":
@@ -126,7 +127,7 @@ namespace ManagerDirectory
 		/// </summary>
 		private void CallDeletion(string command)
 		{
-			string entry = GetPath(_entry.Remove(0, command.Length + 1));
+			string entry = _checker.CheckPath(_entry.Remove(0, command.Length + 1), _defaultPath);
 
 			if (Path.GetExtension(entry) != string.Empty)
 				_deletion.FullPathFile = entry;
@@ -144,7 +145,7 @@ namespace ManagerDirectory
 			if (_entry.Length == command.Length)
 				entry = _defaultPath;
 			else
-				entry = GetPath(_entry.Remove(0, command.Length + 1));
+				entry = _checker.CheckPath(_entry.Remove(0, command.Length + 1), _defaultPath);
 
 
 			if (Path.GetExtension(entry) != string.Empty)
@@ -157,18 +158,6 @@ namespace ManagerDirectory
 				_informer.FullPathDirectory = entry;
 				_informer.FullPathFile = string.Empty;
 			}
-		}
-
-		/// <summary>
-		/// Преобразует путь
-		/// </summary>
-		/// <returns>Абсолютный путь</returns>
-		private string GetPath(string entry)
-		{
-			if (!entry.Contains("\\"))
-				return entry = _defaultPath + entry;
-
-			return _defaultPath;
 		}
 
 		/// <summary>
