@@ -19,24 +19,24 @@ namespace ManagerDirectory.IO
 	    {
 		    try
 		    {
-			    _directory = new DirectoryInfo(path);
-			    Console.ForegroundColor = ConsoleColor.Yellow;
-			    Console.WriteLine(" " + path);
+				_directory = new DirectoryInfo(path);
+				Console.ForegroundColor = ConsoleColor.Yellow;
+				Console.WriteLine(" " + path);
 				Console.ResetColor();
-			    foreach (var directory in _directory.GetDirectories())
-				    Console.WriteLine($"{new string(' ', path.Length / 2)}|{new string('-', path.Length - path.Length / 2)}{directory.Name}");
+				foreach (var directory in _directory.GetDirectories())
+					Console.WriteLine($"{new string(' ', path.Length / 2)}|{new string('-', path.Length - path.Length / 2)}{directory.Name}");
 
-			    foreach (var file in _directory.GetFiles())
-			    {
+				foreach (var file in _directory.GetFiles())
+				{
 					Console.Write($"{new string(' ', path.Length / 2)}|{new string('-', path.Length + 1 - path.Length / 2)}");
-				    Console.ForegroundColor = ConsoleColor.DarkGreen;
-				    Console.Write($"{file.Name}\n");
+					Console.ForegroundColor = ConsoleColor.DarkGreen;
+					Console.Write($"{file.Name}\n");
 					Console.ResetColor();
 				}
 			}
 		    catch (Exception e)
 		    {
-			    Console.WriteLine(e);
+				Console.WriteLine(e);
 		    }
 	    }
     }
