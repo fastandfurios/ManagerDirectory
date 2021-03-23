@@ -11,7 +11,7 @@ namespace ManagerDirectory
     public class Manager : Objects
     {
 	    private string _entry;
-	    private string _defaultPath = "c:\\";
+	    private string _defaultPath = "C:\\";
 	    private string _fileName = "CurrentPath.json";
 	    private string _fileLogErrors = "LogErrors.txt";
 
@@ -22,9 +22,28 @@ namespace ManagerDirectory
 		}
 
 		/// <summary>
-		/// Начинает программу
+		/// Начинает программу c проверки наличия диска в системе
 		/// </summary>
-		private void Start() => _currentPath = _deserializer.Deserialize(_fileName);
+		private void Start()
+		{
+			_currentPath = _deserializer.Deserialize(_fileName);
+
+			foreach (var drive in DriveInfo.GetDrives())
+			{
+				if (_currentPath.Path.Length > drive.Name.Length)
+				{
+					if (drive.Name == _currentPath.Path.Substring(0, 3))
+						return;
+				}
+				else
+				{
+					if (drive.Name == _currentPath.Path.Substring(0, _currentPath.Path.Length))
+						return;
+				}
+			}
+
+			_currentPath.Path = _defaultPath;
+		} 
 
 	    private void Run()
 	    {
@@ -44,11 +63,18 @@ namespace ManagerDirectory
 		    try
 		    {
 			    string command = _entry.Split(" ")[0];
+
+				if(command.Contains(':'))
+					_defaultPath = command + "\\";
+				
 			    string path = string.Empty;
 			    string newPath = string.Empty;
 
 			    switch (command)
 			    {
+					case "disk":
+						CallOutput();
+						break;
 				    case "ls":
 					    path = _entry.Length == command.Length ? _defaultPath : _entry.Remove(0, command.Length + 1);
 						path = _checker.CheckPath(path, _defaultPath);
@@ -108,7 +134,13 @@ namespace ManagerDirectory
 	    }
 
 		/// <summary>
-		/// Вызывает вывод
+		/// Вызывает вывод дисков в системе
+		/// </summary>
+		private void CallOutput()
+			=> _output.GetDrives();
+
+		/// <summary>
+		/// Вызывает вывод деревьев
 		/// </summary>
 		/// <param name="path">Путь</param>
 		private void CallOutput(string path, int maxObjects)

@@ -21,7 +21,7 @@ namespace ManagerDirectory.Validation
 		{
 			foreach (var command in _commands.ArrayCommands)
 			{
-				if (command == nameCommand.Split(" ")[0] && nameCommand != string.Empty)
+				if ((command == nameCommand.Split(" ")[0] && nameCommand != string.Empty) || nameCommand.Contains(':'))
 					return true;
 			}
 			

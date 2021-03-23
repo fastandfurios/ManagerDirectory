@@ -78,6 +78,17 @@ namespace ManagerDirectory.IO
 		    arraySelector.RemoveRange(0, arraySelector.Count);
 		}
 
+		/// <summary>
+		/// Получает список доступных дисков в системе
+		/// </summary>
+	    public void GetDrives()
+	    {
+		    var drives = DriveInfo.GetDrives();
+
+		    foreach (var drive in drives)
+			    Console.WriteLine($"Имя диска: {drive.Name}");
+	    }
+
 	    public void OutputInfoFilesAndDirectory(Informer informer) => Console.WriteLine(informer);
     }
 }
