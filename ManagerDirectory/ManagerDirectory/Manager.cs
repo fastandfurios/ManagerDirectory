@@ -62,7 +62,7 @@ namespace ManagerDirectory
 						Console.Clear();
 						break;
 					case "cd":
-						_defaultPath = _checker.CheckPath( _entry.Split(" ")[1] + "\\", _defaultPath);
+						_defaultPath = _checker.CheckPath(_entry.Remove(0, command.Length + 1) + "\\", _defaultPath);
 						break;
 					case "cd..":
 						_defaultPath = Directory.GetParent(_defaultPath.Remove(_defaultPath.Length - 1, 1))?.FullName;
@@ -71,11 +71,11 @@ namespace ManagerDirectory
 						_defaultPath = Directory.GetDirectoryRoot(_defaultPath);
 						break;
 					case "info":
-						CallInformer();
+						CallInformer(command);
 						_output.OutputInfoFilesAndDirectory(_informer);
 						break;
 					case "rm":
-						CallDeletion();
+						CallDeletion(command);
 						break;
 			    }
 
@@ -92,7 +92,7 @@ namespace ManagerDirectory
 		    }
 		    catch (Exception e)
 		    {
-			    Console.WriteLine("Bad request!");
+			    Console.WriteLine(e.Message);
 				File.AppendAllText(_fileLogErrors, $"{DateTime.Now.ToString("G")} {e.Message} {e.TargetSite}" );
 				File.AppendAllText(_fileLogErrors, Environment.NewLine);
 			    Run();
@@ -104,9 +104,7 @@ namespace ManagerDirectory
 		/// </summary>
 		/// <param name="path">Путь</param>
 		private void CallOutput(string path)
-		{
-			_output.OutputTree(_checker.CheckPath(path, _defaultPath));
-		}
+			=> _output.OutputTree(_checker.CheckPath(path, _defaultPath));
 
 		/// <summary>
 		/// Вызывает копирование
@@ -114,16 +112,14 @@ namespace ManagerDirectory
 		/// <param name="name">Имя удаляемого файла или папки</param>
 		/// <param name="newPath">Путь, по которому производится копирование</param>
 		private void CallCopying(string name, string newPath)
-		{
-			_copying.Copy(_defaultPath, name, newPath);
-		}
+			=> _copying.Copy(_defaultPath, name, newPath);
 
 		/// <summary>
 		/// Вызывает удаление
 		/// </summary>
-		private void CallDeletion()
+		private void CallDeletion(string command)
 		{
-			string entry = GetPath(_entry.Split(" ")[1]);
+			string entry = GetPath(_entry.Remove(0, command.Length + 1));
 
 			if (Path.GetExtension(entry) != string.Empty)
 				_deletion.FullPathFile = entry;
@@ -134,20 +130,26 @@ namespace ManagerDirectory
 		/// <summary>
 		/// Вызывает информатор объектов
 		/// </summary>
-		private void CallInformer()
+		private void CallInformer(string command)
 		{
 			string entry = string.Empty;
 
-			if (_entry.Length == 4)
+			if (_entry.Length == command.Length)
 				entry = _defaultPath;
 			else
-				entry = GetPath(_entry.Split(" ")[1]);
-			
-			
+				entry = GetPath(_entry.Remove(0, command.Length + 1));
+
+
 			if (Path.GetExtension(entry) != string.Empty)
+			{
 				_informer.FullPathFile = entry;
+				_informer.FullPathDirectory = string.Empty;
+			}
 			else
+			{
 				_informer.FullPathDirectory = entry;
+				_informer.FullPathFile = string.Empty;
+			}
 		}
 
 		/// <summary>
@@ -162,6 +164,11 @@ namespace ManagerDirectory
 			return _defaultPath;
 		}
 
+		/// <summary>
+		/// Преобразует введенную строку пользователя в имя файла или папки 
+		/// </summary>
+		/// <param name="str">Строка</param>
+		/// <returns>Имя файла или папки</returns>
 		private string Transform(string str)
 		{
 			for (int i = str.Length - 1; i > 0; i--)

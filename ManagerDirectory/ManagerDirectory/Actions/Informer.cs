@@ -25,7 +25,7 @@ namespace ManagerDirectory.Actions
 
 	    public override string ToString()
 	    {
-		    if (!string.IsNullOrEmpty(_fullPathDirectory))
+		    if (!string.IsNullOrEmpty(_fullPathDirectory) && Path.GetExtension(_fullPathDirectory) == string.Empty)
 		    {
 			    var directoryInfo = new DirectoryInfo(_fullPathDirectory);
 				int countDirectory = directoryInfo.GetDirectories("*", SearchOption.AllDirectories).Length;
