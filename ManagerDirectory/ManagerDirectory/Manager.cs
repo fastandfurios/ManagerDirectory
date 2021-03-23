@@ -75,21 +75,21 @@ namespace ManagerDirectory
 					case "disk":
 						CallOutput();
 						break;
-				    case "ls":
-					    path = _entry.Length == command.Length ? _defaultPath : _entry.Remove(0, command.Length + 1);
+					case "ls":
+						path = _entry.Length == command.Length ? _defaultPath : _entry.Remove(0, command.Length + 1);
 						path = _checker.CheckPath(path, _defaultPath);
 						CallOutput(path, 10);
-					    break;
+						break;
 					case "lsAll":
 						path = _entry.Length == command.Length ? _defaultPath : _entry.Remove(0, command.Length + 1);
 						path = _checker.CheckPath(path, _defaultPath);
 						CallOutput(path, Directory.GetDirectories(path).Length + Directory.GetFiles(path).Length);
 						break;
-				    case "cp":
+					case "cp":
 						path = Transform(_entry.Remove(0, command.Length + 1)).TrimEnd();
 						newPath = _entry.Remove(0, command.Length + path.Length + 2) + "\\";
 						CallCopying(path, newPath);
-					    break;
+						break;
 					case "clear":
 						Console.Clear();
 						break;
@@ -111,27 +111,27 @@ namespace ManagerDirectory
 					case "rm":
 						CallDeletion(command);
 						break;
-			    }
+				}
 
-			    if (command != "exit")
-			    {
-				    _currentPath.Path = string.Empty;
-				    Run();
+				if (command != "exit")
+				{
+					_currentPath.Path = string.Empty;
+					Run();
 				}
-			    else
-			    {
-				    _currentPath.Path = _defaultPath;
-				    _serializer.Serialize(_currentPath, _fileName);
+				else
+				{
+					_currentPath.Path = _defaultPath;
+					_serializer.Serialize(_currentPath, _fileName);
 				}
-		    }
-		    catch (Exception e)
-		    {
-			    Console.WriteLine(e.Message);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.Message);
 				File.AppendAllText(_fileLogErrors, $"{DateTime.Now.ToString("G")} {e.Message} {e.TargetSite}" );
 				File.AppendAllText(_fileLogErrors, Environment.NewLine);
-			    Run();
-		    }
-	    }
+				Run();
+			}
+		}
 
 		/// <summary>
 		/// Вызывает вывод дисков в системе
