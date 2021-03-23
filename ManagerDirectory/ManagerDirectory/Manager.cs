@@ -50,9 +50,14 @@ namespace ManagerDirectory
 			    switch (command)
 			    {
 				    case "ls":
-					    path = _entry.Length == 2 ? _defaultPath : _entry.Remove(0, command.Length + 1);
-						CallOutput(path);
+					    path = _entry.Length == command.Length ? _defaultPath : _entry.Remove(0, command.Length + 1);
+						CallOutput(path, 10);
 					    break;
+					case "lsAll":
+						path = _entry.Length == command.Length ? _defaultPath : _entry.Remove(0, command.Length + 1);
+						path = _checker.CheckPath(path, _defaultPath);
+						CallOutput(path, Directory.GetDirectories(path).Length + Directory.GetFiles(path).Length);
+						break;
 				    case "cp":
 						path = Transform(_entry.Remove(0, command.Length + 1)).TrimEnd();
 						newPath = _entry.Remove(0, command.Length + path.Length + 2) + "\\";
@@ -62,10 +67,12 @@ namespace ManagerDirectory
 						Console.Clear();
 						break;
 					case "cd":
-						_defaultPath = _checker.CheckPath(_entry.Remove(0, command.Length + 1) + "\\", _defaultPath);
+						path = _entry.Remove(0, command.Length + 1) + "\\";
+						_defaultPath = _checker.CheckPath(path, _defaultPath);
 						break;
 					case "cd..":
-						_defaultPath = Directory.GetParent(_defaultPath.Remove(_defaultPath.Length - 1, 1))?.FullName;
+						path = _defaultPath.Remove(_defaultPath.Length - 1, 1);
+						_defaultPath = Directory.GetParent(path)?.FullName;
 						break;
 					case "cd\\":
 						_defaultPath = Directory.GetDirectoryRoot(_defaultPath);
@@ -103,8 +110,8 @@ namespace ManagerDirectory
 		/// Вызывает вывод
 		/// </summary>
 		/// <param name="path">Путь</param>
-		private void CallOutput(string path)
-			=> _output.OutputTree(_checker.CheckPath(path, _defaultPath));
+		private void CallOutput(string path, int maxObjects)
+			=> _output.OutputTree(path, maxObjects);
 
 		/// <summary>
 		/// Вызывает копирование
@@ -165,7 +172,7 @@ namespace ManagerDirectory
 		}
 
 		/// <summary>
-		/// Преобразует введенную строку пользователя в имя файла или папки 
+		/// Преобразует введенную строку пользователя в имя файла или папки при операции копирования
 		/// </summary>
 		/// <param name="str">Строка</param>
 		/// <returns>Имя файла или папки</returns>

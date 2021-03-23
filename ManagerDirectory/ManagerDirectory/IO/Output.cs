@@ -11,14 +11,13 @@ namespace ManagerDirectory.IO
     public class Output
     {
 	    private DirectoryInfo _directory;
-	    private const int MAX_OBJECTS = 10;
 	    private int _countFiles, _countDirectory;
 
 	    /// <summary>
 		/// Выводит список директорий и файлов
 		/// </summary>
 		/// <param name="path">Путь</param>
-	    public void OutputTree(string path)
+	    public void OutputTree(string path, int maxObjects)
 	    {
 		    _directory = new DirectoryInfo(path);
 		    int length = _directory.Name.Length / 2;
@@ -32,7 +31,7 @@ namespace ManagerDirectory.IO
 			
 			foreach (var directory in _directory.GetDirectories())
 		    {
-			    if (_countDirectory < MAX_OBJECTS)
+			    if (_countDirectory < maxObjects)
 			    {
 				    Console.WriteLine(
 					    $"{new string(' ', spaceLength)}|{new string('-', length + 1)}{directory.Name}");
@@ -50,7 +49,7 @@ namespace ManagerDirectory.IO
 
 			foreach (var file in _directory.GetFiles())
 		    {
-			    if (_countFiles < MAX_OBJECTS)
+			    if (_countFiles < maxObjects)
 			    {
 				    Console.Write(
 					    $"{new string(' ', spaceLength)}|{new string('-', length + 1)}");

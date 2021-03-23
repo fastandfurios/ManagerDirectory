@@ -11,6 +11,7 @@ namespace ManagerDirectory.Repository
 		public string[] ArrayCommands => new string[]
 		{
 			"ls",
+			"lsAll",
 			"cp",
 			"rm",
 			"info",
