@@ -50,19 +50,15 @@ namespace ManagerDirectory.Actions
 
 			if (_countFiles != 0)
 			{
-				File.Delete(
-					Directory.GetFiles(_fullPathDirectory, "*.*", SearchOption.AllDirectories)[_countFiles - 1]);
+				File.Delete(Directory.GetFiles(_fullPathDirectory, "*.*", SearchOption.AllDirectories)[_countFiles - 1]);
 				Delete();
 			}
 
 			if (_countDirectory != 0)
 			{
-				Directory.Delete(
-					Directory.GetDirectories(_fullPathDirectory, "*",
-						SearchOption.AllDirectories)[_countDirectory - 1]);
+				Directory.Delete(Directory.GetDirectories(_fullPathDirectory, "*", SearchOption.AllDirectories)[_countDirectory - 1]);
 				Delete();
 			}
-			
 		}
     }
 }

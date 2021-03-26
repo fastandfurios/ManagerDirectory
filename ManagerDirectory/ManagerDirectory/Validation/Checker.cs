@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ManagerDirectory.Repository;
 
@@ -21,10 +22,20 @@ namespace ManagerDirectory.Validation
 		{
 			foreach (var command in _commands.ArrayCommands)
 			{
-				if ((command == nameCommand.Split(" ")[0] && nameCommand != string.Empty) || nameCommand.Contains(':'))
+				if ((command == nameCommand.Split(" ")[0] && nameCommand != string.Empty))
 					return true;
+
+				if (nameCommand.Contains(':') && nameCommand.Length == 2)
+				{
+					foreach (var drive in DriveInfo.GetDrives())
+					{
+						if (nameCommand == drive.Name.Replace("\\", ""))
+							return true;
+					}
+				}
 			}
-			
+
+			Console.WriteLine("Unknown command!");
 			return false;
 		}
 
