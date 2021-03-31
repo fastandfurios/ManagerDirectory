@@ -1,30 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ManagerDirectory.Models;
 
 namespace ManagerDirectory
 {
-    public class Manager : Objects
-    {
-	    private string _entry;
+	public class Manager : Objects
+	{
+		private string _entry;
 	    private string _defaultPath = "C:\\";
 	    private string _fileName = "CurrentPath.json";
 	    private string _fileLogErrors = "LogErrors.txt";
 
-		public Manager()
+		public void Start()
 		{
-			Start();
+			GetDisk();
 			Run();
 		}
 
 		/// <summary>
-		/// Начинает программу c проверки наличия диска в системе
+		/// Получает диск
 		/// </summary>
-		private void Start()
+		private void GetDisk()
 		{
 			_currentPath = _deserializer.Deserialize(_fileName, _currentPath, _defaultPath);
 
@@ -123,7 +125,7 @@ namespace ManagerDirectory
 					_currentPath.Path = _defaultPath;
 					_serializer.Serialize(_currentPath, _fileName);
 				}
-			}
+		    }
 			catch (Exception e)
 			{
 				Console.WriteLine(e.Message);
@@ -219,5 +221,5 @@ namespace ManagerDirectory
 
 			return str;
 		}
-    }
+	}
 }

@@ -12,41 +12,46 @@ namespace ManagerDirectory.Actions
 	    private string _fullPathFile;
 	    public string FullPathFile
 	    {
-		    get => _fullPathFile;
 		    set => _fullPathFile = value;
 	    }
 
 	    private string _fullPathDirectory;
 	    public string FullPathDirectory
 	    {
-		    get => _fullPathDirectory;
 		    set => _fullPathDirectory = value;
 	    }
 
 	    public override string ToString()
 	    {
-		    if (!string.IsNullOrEmpty(_fullPathDirectory) && Path.GetExtension(_fullPathDirectory) == string.Empty)
+		    try
 		    {
-			    var directoryInfo = new DirectoryInfo(_fullPathDirectory);
-				int countDirectory = directoryInfo.GetDirectories("*", SearchOption.AllDirectories).Length;
-			    int countFiles = directoryInfo.GetFiles("*.*", SearchOption.AllDirectories).Length;
-			    long size = 0;
+			    if (!string.IsNullOrEmpty(_fullPathDirectory) && Path.GetExtension(_fullPathDirectory) == string.Empty)
+			    {
+				    var directoryInfo = new DirectoryInfo(_fullPathDirectory);
+				    int countDirectory = Task.Run(() => directoryInfo.GetDirectories("*", SearchOption.AllDirectories).Length).Result;
+				    int countFiles = Task.Run(() => directoryInfo.GetFiles("*.*", SearchOption.AllDirectories).Length).Result;
+				    long size = 0;
 
-				foreach (var file in directoryInfo.GetFiles("*.*", SearchOption.AllDirectories))
-					size += file.Length;
+				    foreach (var file in directoryInfo.GetFiles("*.*", SearchOption.AllDirectories))
+					    size += file.Length;
 
-			    return $"Количество папок: {countDirectory}\n" +
-			           $"Количество файлов: {countFiles}\n" +
-			           $"Размер: {Converter(size)}";
+				    return $"Количество папок: {countDirectory}\n" +
+				           $"Количество файлов: {countFiles}\n" +
+				           $"Размер: {Converter(size)}";
+			    }
+			    else
+			    {
+				    var fileInfo = new FileInfo(_fullPathFile);
+
+				    return $"Имя: {Path.GetFileNameWithoutExtension(_fullPathFile)}\n" +
+				           $"Расширение: {fileInfo.Extension}\n" +
+				           $"Размер: {Converter(fileInfo.Length)}";
+			    }
 		    }
-		    else
+		    catch (Exception e)
 		    {
-			    var fileInfo = new FileInfo(_fullPathFile);
-
-				return $"Имя: {Path.GetFileNameWithoutExtension(_fullPathFile)}\n" +
-			           $"Расширение: {fileInfo.Extension}\n" +
-			           $"Размер: {Converter(fileInfo.Length)}";
-		    }
+			    return e.Message;
+			}
 	    }
 
 		/// <summary>

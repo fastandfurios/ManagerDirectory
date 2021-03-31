@@ -17,7 +17,7 @@ namespace ManagerDirectory.IO
 		/// Выводит список директорий и файлов
 		/// </summary>
 		/// <param name="path">Путь</param>
-	    public void OutputTree(string path, int maxObjects)
+	    public async void OutputTree(string path, int maxObjects)
 	    {
 		    _directory = new DirectoryInfo(path);
 		    int length = _directory.Name.Length / 2;
@@ -25,9 +25,9 @@ namespace ManagerDirectory.IO
 		    var arraySelector = path.Where(s => s == '\\').Select(s => s = '\\').ToList();
 
 			if (arraySelector.Count > 2)
-				OutputTree(" ~\\" + _directory.Name, arraySelector, _directory.Name.Length / 2 + 2, out spaceLength);
+				await OutputTree(" ~\\" + _directory.Name, arraySelector, _directory.Name.Length / 2 + 2, out spaceLength);
 		    else
-				OutputTree(" " + path, arraySelector, path.Length - length, out spaceLength);
+				await OutputTree(" " + path, arraySelector, path.Length - length, out spaceLength);
 			
 			foreach (var directory in _directory.GetDirectories())
 		    {
@@ -69,13 +69,14 @@ namespace ManagerDirectory.IO
 			_countFiles = 0;
 		}
 
-	    private void OutputTree(string str, List<char> arraySelector, int exp, out int spaceLength )
+	    private Task OutputTree(string entry, List<char> arraySelector, int exp, out int spaceLength )
 	    {
 		    Console.ForegroundColor = ConsoleColor.Yellow;
-		    Console.WriteLine(str);
+		    Console.WriteLine(entry);
 		    Console.ResetColor();
 		    spaceLength = exp;
 		    arraySelector.RemoveRange(0, arraySelector.Count);
+			return Task.CompletedTask;
 		}
 
 		/// <summary>

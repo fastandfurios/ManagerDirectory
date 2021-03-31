@@ -24,7 +24,7 @@ namespace ManagerDirectory.IO
 		    {
 				Console.Write($"{defaultPath} > ");
 				_entry = Console.ReadLine();
-			} while (!checker.CheckInputCommand(_entry));
+		    } while (!checker.CheckInputCommand(_entry));
 
 		    return _entry;
 	    }
