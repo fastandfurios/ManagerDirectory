@@ -50,7 +50,8 @@ namespace ManagerDirectory
 	    private void Run()
 	    {
 			if (File.Exists(_fileName) && !string.IsNullOrEmpty(_currentPath.Path))
-				_defaultPath = _currentPath.Path;
+				if(Directory.Exists(_currentPath.Path))
+					_defaultPath = _currentPath.Path;
 
 			_entry = _input.Input(_defaultPath, _checker);
 
