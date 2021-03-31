@@ -163,10 +163,13 @@ namespace ManagerDirectory
 		{
 			string entry = _checker.CheckPath(_entry.Remove(0, command.Length + 1), _defaultPath);
 
-			if (Path.GetExtension(entry) != string.Empty)
-				_deletion.FullPathFile = entry;
-			else
-				_deletion.FullPathDirectory = entry;
+			if (_input.Input(_checker).Equals("y"))
+			{
+				if (Path.GetExtension(entry) != string.Empty)
+					_deletion.FullPathFile = entry;
+				else
+					_deletion.FullPathDirectory = entry;
+			}
 		}
 
 		/// <summary>

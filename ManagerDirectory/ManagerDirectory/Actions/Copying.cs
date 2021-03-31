@@ -13,7 +13,7 @@ namespace ManagerDirectory.Actions
 	    {
 		    try
 		    {
-			    if (Path.GetExtension(name) != string.Empty)
+			    if (Path.GetExtension(name) != string.Empty && !string.IsNullOrEmpty(name))
 			    {
 				    foreach (var file in Directory.GetFiles(oldPath, name, SearchOption.TopDirectoryOnly))
 					    File.Copy(file, file.Replace(oldPath, newPath), true);

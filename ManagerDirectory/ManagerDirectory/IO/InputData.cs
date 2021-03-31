@@ -28,5 +28,16 @@ namespace ManagerDirectory.IO
 
 		    return _entry;
 	    }
+
+		public string Input(Checker checker)
+		{
+			Console.Write($"Continue y/n: ");
+			_entry = Console.ReadLine();
+
+			if (checker.CheckInputCommand(_entry))
+				return _entry;
+			
+			return _entry;
+		}
     }
 }

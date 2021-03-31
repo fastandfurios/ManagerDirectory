@@ -15,28 +15,31 @@ namespace ManagerDirectory.Actions
 	    private string _fullPathDirectory;
 	    public string FullPathDirectory
 	    {
-		    get => _fullPathDirectory; 
 		    set
 		    {
 			    _fullPathDirectory = value;
 
-				Delete();
-
-				Directory.Delete(_fullPathDirectory);
-				Console.WriteLine("Удаление прошло успешно!");
-		    } 
+			    if (!string.IsNullOrEmpty(_fullPathDirectory))
+			    {
+				    Delete();
+				    Directory.Delete(_fullPathDirectory);
+				    Console.WriteLine("Удаление прошло успешно!");
+				}
+		    }
 	    }
 
 	    private string _fullPathFile;
 	    public string FullPathFile
 	    {
-		    get => _fullPathFile;
 		    set
 		    {
 			    _fullPathFile = value;
 
-			    File.Delete(_fullPathFile);
-			    Console.WriteLine("Удаление прошло успешно!");
+			    if (!string.IsNullOrEmpty(_fullPathFile))
+			    {
+				    File.Delete(_fullPathFile);
+				    Console.WriteLine("Удаление прошло успешно!");
+				}
 			}
 	    }
 

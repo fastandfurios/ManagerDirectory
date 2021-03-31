@@ -20,7 +20,9 @@ namespace ManagerDirectory.Repository
 			"cd",
 			"cd..",
 			"cd\\",
-			"exit"
+			"exit",
+			"y",
+			"n"
 		};
 }
 }
