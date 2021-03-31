@@ -11,23 +11,27 @@ namespace ManagerDirectory.Actions
     {
 	    public void Copy(string oldPath, string name, string newPath)
 	    {
-		    if (Path.GetExtension(name) != string.Empty)
+		    try
 		    {
-			    foreach (var file in Directory.GetFiles(oldPath, name, SearchOption.TopDirectoryOnly))
-				    File.Copy(file, file.Replace(oldPath, newPath), true);
+			    if (Path.GetExtension(name) != string.Empty)
+			    {
+				    foreach (var file in Directory.GetFiles(oldPath, name, SearchOption.TopDirectoryOnly))
+					    File.Copy(file, file.Replace(oldPath, newPath), true);
 
-			    Console.WriteLine($"Копирование прошло успешно!");
-		    }
-		    else
-		    {
-			    foreach (var directory in Directory.GetDirectories(oldPath, name, SearchOption.TopDirectoryOnly))
-				    Directory.CreateDirectory(directory.Replace(oldPath, newPath));
+				    Console.WriteLine($"Копирование прошло успешно!");
+			    }
+			    else
+			    {
+				    foreach (var directory in Directory.GetDirectories(oldPath, name, SearchOption.TopDirectoryOnly))
+					    Directory.CreateDirectory(directory.Replace(oldPath, newPath));
 
-			    foreach (var file in Directory.GetFiles(oldPath + name, "*.*", SearchOption.TopDirectoryOnly))
-				    File.Copy(file, file.Replace(oldPath, newPath), true);
+				    foreach (var file in Directory.GetFiles(oldPath + name, "*.*", SearchOption.TopDirectoryOnly))
+					    File.Copy(file, file.Replace(oldPath, newPath), true);
 
-			    Console.WriteLine($"Копирование прошло успешно!");
-		    }
+				    Console.WriteLine($"Копирование прошло успешно!");
+			    }
+			}
+		    finally{}
 	    }
     }
 }

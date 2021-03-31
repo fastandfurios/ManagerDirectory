@@ -19,7 +19,9 @@ namespace ManagerDirectory.IO
 		/// <param name="path">Путь</param>
 	    public async void OutputTree(string path, int maxObjects)
 	    {
-		    _directory = new DirectoryInfo(path);
+		    try
+		    {
+				_directory = new DirectoryInfo(path);
 		    int length = _directory.Name.Length / 2;
 		    int spaceLength;
 		    var arraySelector = path.Where(s => s == '\\').Select(s => s = '\\').ToList();
@@ -67,6 +69,8 @@ namespace ManagerDirectory.IO
 		    }
 
 			_countFiles = 0;
+		    }
+		    finally{}
 		}
 
 	    private Task OutputTree(string entry, List<char> arraySelector, int exp, out int spaceLength )

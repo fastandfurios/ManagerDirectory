@@ -129,7 +129,7 @@ namespace ManagerDirectory
 			catch (Exception e)
 			{
 				Console.WriteLine(e.Message);
-				File.AppendAllText(_fileLogErrors, $"{DateTime.Now.ToString("G")} {e.Message} {e.TargetSite}" );
+				File.AppendAllText(_fileLogErrors, $"{DateTime.Now.ToString("G")} {e.Message} {e.TargetSite}");
 				File.AppendAllText(_fileLogErrors, Environment.NewLine);
 				Run();
 			}

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ManagerDirectory.Actions
 {
+	
     public class Informer
     {
 	    private string _fullPathFile;
@@ -28,8 +29,11 @@ namespace ManagerDirectory.Actions
 			    if (!string.IsNullOrEmpty(_fullPathDirectory) && Path.GetExtension(_fullPathDirectory) == string.Empty)
 			    {
 				    var directoryInfo = new DirectoryInfo(_fullPathDirectory);
-				    int countDirectory = Task.Run(() => directoryInfo.GetDirectories("*", SearchOption.AllDirectories).Length).Result;
-				    int countFiles = Task.Run(() => directoryInfo.GetFiles("*.*", SearchOption.AllDirectories).Length).Result;
+
+				    int countDirectory =
+					    Task.Run(() => directoryInfo.GetDirectories("*", SearchOption.AllDirectories).Length).Result;
+				    int countFiles = Task.Run(() => directoryInfo.GetFiles("*.*", SearchOption.AllDirectories).Length)
+					    .Result;
 				    long size = 0;
 
 				    foreach (var file in directoryInfo.GetFiles("*.*", SearchOption.AllDirectories))
@@ -48,10 +52,7 @@ namespace ManagerDirectory.Actions
 				           $"Размер: {Converter(fileInfo.Length)}";
 			    }
 		    }
-		    catch (Exception e)
-		    {
-			    return e.Message;
-			}
+		    finally{}
 	    }
 
 		/// <summary>
