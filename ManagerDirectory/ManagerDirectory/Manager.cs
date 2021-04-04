@@ -97,7 +97,8 @@ namespace ManagerDirectory
 						Console.Clear();
 						break;
 					case "cd":
-						path = _entry.Remove(0, command.Length + 1) + "\\";
+						path = _entry.Remove(0, command.Length + 1);
+						Transform(ref path);
 						_defaultPath = _checker.CheckPath(path, _defaultPath);
 						break;
 					case "cd..":
@@ -201,20 +202,20 @@ namespace ManagerDirectory
 		/// <summary>
 		/// Преобразует введенную строку пользователя в имя файла или папки при операции копирования
 		/// </summary>
-		/// <param name="str">Строка</param>
+		/// <param name="entry">Строка</param>
 		/// <returns>Имя файла или папки</returns>
-		private string Transform(string str)
+		private string Transform(string entry)
 		{
-			for (int i = str.Length - 1; i > 0; i--)
+			for (int i = entry.Length - 1; i > 0; i--)
 			{
-				if (str[i] != ':')
-					str = str.Remove(i, 1);
+				if (entry[i] != ':')
+					entry = entry.Remove(i, 1);
 				else
 				{
-					for (int j = str.Length - 1; j > 0; j--)
+					for (int j = entry.Length - 1; j > 0; j--)
 					{
-						if (str[j] != ' ')
-							str = str.Remove(j, 1);
+						if (entry[j] != ' ')
+							entry = entry.Remove(j, 1);
 						else
 							break;
 					}
@@ -223,7 +224,16 @@ namespace ManagerDirectory
 				}
 			}
 
-			return str;
+			return entry;
+		}
+
+		//TODO доделать метод
+		private void Transform(ref string entry)
+		{
+			if (!entry.Contains("\\"))
+			{
+
+			}
 		}
 	}
 }
