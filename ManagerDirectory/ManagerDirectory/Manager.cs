@@ -98,7 +98,7 @@ namespace ManagerDirectory
 						break;
 					case "cd":
 						path = _entry.Remove(0, command.Length + 1);
-						Transform(ref path);
+						ChangePath(ref path);
 						_defaultPath = _checker.CheckPath(path, _defaultPath);
 						break;
 					case "cd..":
@@ -227,12 +227,14 @@ namespace ManagerDirectory
 			return entry;
 		}
 
-		//TODO доделать метод
-		private void Transform(ref string entry)
+		
+		private void ChangePath(ref string entry)
 		{
 			if (!entry.Contains("\\"))
 			{
-
+				if (_defaultPath.EndsWith("\\")) { }
+				else
+					entry = "\\" + entry;
 			}
 		}
 	}
