@@ -6,16 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ManagerDirectory.Actions;
 using ManagerDirectory.Models;
 
 namespace ManagerDirectory
 {
 	public class Manager : Objects
 	{
+		#region Fields
 		private string _entry;
-	    private string _defaultPath = "C:\\";
-	    private string _fileName = "CurrentPath.json";
-	    private string _fileLogErrors = "LogErrors.txt";
+		private string _defaultPath = "C:\\";
+		private string _fileName = "CurrentPath.json";
+		private string _fileLogErrors = "LogErrors.txt";
+		#endregion
 
 		public void Start()
 		{
@@ -28,32 +31,32 @@ namespace ManagerDirectory
 		/// </summary>
 		private void GetDisk()
 		{
-			_currentPath = _deserializer.Deserialize(_fileName, _currentPath, _defaultPath);
+			CurrentPath = Deserializer.Deserialize(_fileName, CurrentPath, _defaultPath);
 
 			foreach (var drive in DriveInfo.GetDrives())
 			{
-				if (_currentPath.Path.Length > drive.Name.Length)
+				if (CurrentPath.Path.Length > drive.Name.Length)
 				{
-					if (drive.Name == _currentPath.Path.Substring(0, 3))
+					if (drive.Name == CurrentPath.Path.Substring(0, 3))
 						return;
 				}
 				else
 				{
-					if (drive.Name == _currentPath.Path.Substring(0, _currentPath.Path.Length))
+					if (drive.Name == CurrentPath.Path.Substring(0, CurrentPath.Path.Length))
 						return;
 				}
 			}
 
-			_currentPath.Path = _defaultPath;
+			CurrentPath.Path = _defaultPath;
 		} 
 
 	    private void Run()
 	    {
-			if (File.Exists(_fileName) && !string.IsNullOrEmpty(_currentPath.Path))
-				if(Directory.Exists(_currentPath.Path))
-					_defaultPath = _currentPath.Path;
+			if (File.Exists(_fileName) && !string.IsNullOrEmpty(CurrentPath.Path))
+				if(Directory.Exists(CurrentPath.Path))
+					_defaultPath = CurrentPath.Path;
 
-			_entry = _input.Input(_defaultPath, _checker);
+			_entry = Input.Input(_defaultPath, Checker);
 
 			ToDistribute();
 	    }
@@ -76,57 +79,54 @@ namespace ManagerDirectory
 			    switch (command)
 			    {
 					case "disk":
-						CallOutput();
+						Output.GetDrives();
+						JumpInRun();
 						break;
 					case "ls":
-						path = _entry.Length == command.Length ? _defaultPath : _entry.Remove(0, command.Length + 1);
-						path = _checker.CheckPath(path, _defaultPath);
-						CallOutput(path, 10);
+						CallOutput(path, command, 10);
+						JumpInRun();
 						break;
 					case "lsAll":
-						path = _entry.Length == command.Length ? _defaultPath : _entry.Remove(0, command.Length + 1);
-						path = _checker.CheckPath(path, _defaultPath);
-						CallOutput(path, Directory.GetDirectories(path).Length + Directory.GetFiles(path).Length);
+						CallOutput(path, command, Directory.GetDirectories(path).Length + Directory.GetFiles(path).Length);
+						JumpInRun();
 						break;
 					case "cp":
-						path = Transform(_entry.Remove(0, command.Length + 1)).TrimEnd();
-						newPath = _entry.Remove(0, command.Length + path.Length + 2) + "\\";
-						CallCopying(path, newPath);
+						CallCopying(path, newPath, command);
+						JumpInRun();
 						break;
 					case "clear":
 						Console.Clear();
+						JumpInRun();
 						break;
 					case "cd":
 						path = _entry.Remove(0, command.Length + 1);
 						ChangePath(ref path);
-						_defaultPath = _checker.CheckPath(path, _defaultPath);
+						_defaultPath = Checker.CheckPath(path, _defaultPath);
+						JumpInRun();
 						break;
 					case "cd..":
 						path = _defaultPath.Remove(_defaultPath.Length - 1, 1);
 						_defaultPath = Directory.GetParent(path)?.FullName;
+						JumpInRun();
 						break;
 					case "cd\\":
 						_defaultPath = Directory.GetDirectoryRoot(_defaultPath);
+						JumpInRun();
 						break;
 					case "info":
 						CallInformer(command);
-						_output.OutputInfoFilesAndDirectory(_informer);
+						Output.OutputInfoFilesAndDirectory(Informer);
+						JumpInRun();
 						break;
 					case "rm":
 						CallDeletion(command);
+						JumpInRun();
 						break;
-				}
-
-				if (command != "exit")
-				{
-					_currentPath.Path = string.Empty;
-					Run();
-				}
-				else
-				{
-					_currentPath.Path = _defaultPath;
-					_serializer.Serialize(_currentPath, _fileName);
-				}
+					case "exit":
+						CurrentPath.Path = _defaultPath;
+						Serializer.Serialize(CurrentPath, _fileName);
+						break;
+			    }
 		    }
 			catch (Exception e)
 			{
@@ -138,39 +138,42 @@ namespace ManagerDirectory
 		}
 
 		/// <summary>
-		/// Вызывает вывод дисков в системе
-		/// </summary>
-		private void CallOutput()
-			=> _output.GetDrives();
-
-		/// <summary>
 		/// Вызывает вывод деревьев
 		/// </summary>
 		/// <param name="path">Путь</param>
-		private void CallOutput(string path, int maxObjects)
-			=> _output.OutputTree(path, maxObjects);
+		private void CallOutput(string path, string command, int maxObjects)
+		{
+			path = _entry.Length == command.Length ? _defaultPath : _entry.Remove(0, command.Length + 1);
+			path = Checker.CheckPath(path, _defaultPath);
+			Output.OutputTree(path, maxObjects);
+		}
+
 
 		/// <summary>
 		/// Вызывает копирование
 		/// </summary>
 		/// <param name="name">Имя удаляемого файла или папки</param>
 		/// <param name="newPath">Путь, по которому производится копирование</param>
-		private void CallCopying(string name, string newPath)
-			=> _copying.Copy(_defaultPath, name, newPath);
-
+		private void CallCopying(string name, string newPath, string command)
+		{
+			name = Transform(_entry.Remove(0, command.Length + 1)).TrimEnd();
+			newPath = _entry.Remove(0, command.Length + name.Length + 2) + "\\";
+			Copying.Copy(_defaultPath, name, newPath);
+		}
+		
 		/// <summary>
 		/// Вызывает удаление
 		/// </summary>
 		private void CallDeletion(string command)
 		{
-			string entry = _checker.CheckPath(_entry.Remove(0, command.Length + 1), _defaultPath);
+			string entry = Checker.CheckPath(_entry.Remove(0, command.Length + 1), _defaultPath);
 
-			if (_input.Input(_checker).Equals("y"))
+			if (Input.Input(Checker).Equals("y"))
 			{
 				if (Path.GetExtension(entry) != string.Empty)
-					_deletion.FullPathFile = entry;
+					Deletion.FullPathFile = entry;
 				else
-					_deletion.FullPathDirectory = entry;
+					Deletion.FullPathDirectory = entry;
 			}
 		}
 
@@ -179,23 +182,18 @@ namespace ManagerDirectory
 		/// </summary>
 		private void CallInformer(string command)
 		{
-			string entry = string.Empty;
-
-			if (_entry.Length == command.Length)
-				entry = _defaultPath;
-			else
-				entry = _checker.CheckPath(_entry.Remove(0, command.Length + 1), _defaultPath);
-
-
+			string entry = _entry.Length == command.Length ? _defaultPath : 
+				Checker.CheckPath(_entry.Remove(0, command.Length + 1), _defaultPath);
+			
 			if (Path.GetExtension(entry) != string.Empty)
 			{
-				_informer.FullPathFile = entry;
-				_informer.FullPathDirectory = string.Empty;
+				Informer.FullPathFile = entry;
+				Informer.FullPathDirectory = string.Empty;
 			}
 			else
 			{
-				_informer.FullPathDirectory = entry;
-				_informer.FullPathFile = string.Empty;
+				Informer.FullPathDirectory = entry;
+				Informer.FullPathFile = string.Empty;
 			}
 		}
 
@@ -227,15 +225,20 @@ namespace ManagerDirectory
 			return entry;
 		}
 
-		
 		private void ChangePath(ref string entry)
 		{
 			if (!entry.Contains("\\"))
 			{
-				if (_defaultPath.EndsWith("\\")) { }
+				if (_defaultPath.EndsWith("\\")) { return; }
 				else
 					entry = "\\" + entry;
 			}
+		}
+
+		private void JumpInRun()
+		{
+			CurrentPath.Path = string.Empty;
+			Run();
 		}
 	}
 }

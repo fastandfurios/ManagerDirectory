@@ -9,44 +9,49 @@ namespace ManagerDirectory.Actions
 {
     public class Deletion
     {
-	    private int _countFiles;
-	    private int _countDirectory;
+		#region Fields
+		private int _countFiles;
+		private int _countDirectory;
+		#endregion
 
-	    private string _fullPathDirectory;
-	    public string FullPathDirectory
-	    {
-		    set
-		    {
-			    _fullPathDirectory = value;
+		#region Fields and Properties
+		private string _fullPathDirectory;
+		public string FullPathDirectory
+		{
+			set
+			{
+				_fullPathDirectory = value;
 
-			    if (!string.IsNullOrEmpty(_fullPathDirectory))
-			    {
-				    Delete();
-				    Directory.Delete(_fullPathDirectory);
-				    Console.WriteLine("Удаление прошло успешно!");
-				}
-		    }
-	    }
-
-	    private string _fullPathFile;
-	    public string FullPathFile
-	    {
-		    set
-		    {
-			    _fullPathFile = value;
-
-			    if (!string.IsNullOrEmpty(_fullPathFile))
-			    {
-				    File.Delete(_fullPathFile);
-				    Console.WriteLine("Удаление прошло успешно!");
+				if (!string.IsNullOrEmpty(_fullPathDirectory))
+				{
+					Delete();
+					Directory.Delete(_fullPathDirectory);
+					Console.WriteLine("Удаление прошло успешно!");
 				}
 			}
-	    }
+		}
+
+		private string _fullPathFile;
+		public string FullPathFile
+		{
+			set
+			{
+				_fullPathFile = value;
+
+				if (!string.IsNullOrEmpty(_fullPathFile))
+				{
+					File.Delete(_fullPathFile);
+					Console.WriteLine("Удаление прошло успешно!");
+				}
+			}
+		}
+		#endregion
+
 
 		/// <summary>
 		/// Удаляет все директории и файлы в указанной директории
 		/// </summary>
-        private void Delete()
+		private void Delete()
 		{
 			try
 			{

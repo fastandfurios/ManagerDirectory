@@ -14,28 +14,29 @@ namespace ManagerDirectory
 {
     public abstract class Objects
     {
-	    protected InputData _input;
-	    protected Output _output;
-	    protected Copying _copying;
-	    protected Deletion _deletion;
-	    protected Serializer _serializer;
-	    protected Deserializer _deserializer;
-	    protected CurrentPath _currentPath;
-	    protected Informer _informer;
-	    protected Checker _checker;
-
+		#region Fields
+		protected readonly InputData Input;
+		protected readonly Output Output;
+		protected readonly Copying Copying;
+		protected readonly Deletion Deletion;
+		protected readonly Serializer Serializer;
+		protected readonly Deserializer Deserializer;
+		protected CurrentPath CurrentPath;
+		protected readonly Informer Informer;
+		protected readonly Checker Checker;
+		#endregion
 
 		protected Objects()
 	    {
-		    _serializer = new Serializer();
-		    _deserializer = new Deserializer();
-		    _input = new InputData();
-		    _output = new Output();
-		    _copying = new Copying();
-		    _deletion = new Deletion();
-			_currentPath = new CurrentPath();
-			_informer = new Informer();
-			_checker = new Checker();
+		    Serializer = new Serializer();
+		    Deserializer = new Deserializer();
+		    Input = new InputData();
+		    Output = new Output();
+		    Copying = new Copying();
+		    Deletion = new Deletion();
+			CurrentPath = new CurrentPath();
+			Informer = new Informer();
+			Checker = new Checker();
 		}
     }
 }

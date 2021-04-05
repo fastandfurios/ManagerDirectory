@@ -10,7 +10,7 @@ namespace ManagerDirectory.Validation
 {
     public class Checker
     {
-	    private Commands _commands = new Commands();
+	    private readonly Commands _commands = new Commands();
 
 		/// <summary>
 		/// Проверяет введенную команду
@@ -50,6 +50,8 @@ namespace ManagerDirectory.Validation
 				return defaultPath + path;
 			else if ((Directory.Exists(path) || File.Exists(path)) && path.Contains('\\'))
 				return path;
+
+			Console.WriteLine(Path.GetExtension(path) == string.Empty ? "Directory not found!" : "File not found!");
 
 			return defaultPath;
 		}
