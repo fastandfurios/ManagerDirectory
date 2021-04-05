@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace ManagerDirectory.Actions
 {
-	
-    public class Informer
+	public class Informer
     {
 	    private string _fullPathFile;
 	    public string FullPathFile
@@ -65,11 +64,11 @@ namespace ManagerDirectory.Actions
 			if (size < 1024)
 				return $"{size.ToString()} B";
 			else if (1024 < size && size < 1_048_576)
-				return $"{((double)size / 1024).ToString("F")} KB";
+				return $"{((double)size / 1024):F} KB";
 			else if (1_048_576 < size && size < 1_073_741_824)
-				return $"{((double)size / 1_048_576).ToString("F")} MB";
+				return $"{((double)size / 1_048_576):F} MB";
 			else if (size > 1_073_741_824)
-				return $"{((double)size / 1_073_741_824).ToString("F")} GB";
+				return $"{((double)size / 1_073_741_824):F} GB";
 
 			return default;
 		}

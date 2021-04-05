@@ -131,7 +131,7 @@ namespace ManagerDirectory
 			catch (Exception e)
 			{
 				Console.WriteLine(e.Message);
-				File.AppendAllText(_fileLogErrors, $"{DateTime.Now.ToString("G")} {e.Message} {e.TargetSite}");
+				File.AppendAllText(_fileLogErrors, $"{DateTime.Now:G} {e.Message} {e.TargetSite}");
 				File.AppendAllText(_fileLogErrors, Environment.NewLine);
 				Run();
 			}
@@ -147,7 +147,6 @@ namespace ManagerDirectory
 			path = Checker.CheckPath(path, _defaultPath);
 			Output.OutputTree(path, maxObjects);
 		}
-
 
 		/// <summary>
 		/// Вызывает копирование
