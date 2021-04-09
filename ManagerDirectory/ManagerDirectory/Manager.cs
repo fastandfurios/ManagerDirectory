@@ -16,8 +16,8 @@ namespace ManagerDirectory
 		#region Fields
 		private string _entry;
 		private string _defaultPath = "C:\\";
-		private string _fileName = "CurrentPath.json";
-		private string _fileLogErrors = "LogErrors.txt";
+		private const string FILE_NAME = "CurrentPath.json";
+		private const string FILE_LOG_ERRORS = "LogErrors.txt";
 		#endregion
 
 		public void Start()
@@ -31,7 +31,7 @@ namespace ManagerDirectory
 		/// </summary>
 		private void GetDisk()
 		{
-			CurrentPath = Deserializer.Deserialize(_fileName, CurrentPath, _defaultPath);
+			CurrentPath = Deserializer.Deserialize(FILE_NAME, CurrentPath, _defaultPath);
 
 			foreach (var drive in DriveInfo.GetDrives())
 			{
@@ -52,7 +52,7 @@ namespace ManagerDirectory
 
 	    private void Run()
 	    {
-			if (File.Exists(_fileName) && !string.IsNullOrEmpty(CurrentPath.Path))
+			if (File.Exists(FILE_NAME) && !string.IsNullOrEmpty(CurrentPath.Path))
 				if(Directory.Exists(CurrentPath.Path))
 					_defaultPath = CurrentPath.Path;
 
@@ -124,15 +124,15 @@ namespace ManagerDirectory
 						break;
 					case "exit":
 						CurrentPath.Path = _defaultPath;
-						Serializer.Serialize(CurrentPath, _fileName);
+						Serializer.Serialize(CurrentPath, FILE_NAME);
 						break;
 			    }
 		    }
 			catch (Exception e)
 			{
 				Console.WriteLine(e.Message);
-				File.AppendAllText(_fileLogErrors, $"{DateTime.Now:G} {e.Message} {e.TargetSite}");
-				File.AppendAllText(_fileLogErrors, Environment.NewLine);
+				File.AppendAllText(FILE_LOG_ERRORS, $"{DateTime.Now:G} {e.Message} {e.TargetSite}");
+				File.AppendAllText(FILE_LOG_ERRORS, Environment.NewLine);
 				Run();
 			}
 		}
