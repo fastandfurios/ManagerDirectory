@@ -7,13 +7,13 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using ManagerDirectory.Models;
 
-namespace ManagerDirectory.Serialization
+namespace ManagerDirectory.Repository
 {
-    public class Deserializer
+    public class ManagerRepository
     {
 	    private string _currentPath;
 
-		public CurrentPath Deserialize(string fileName, CurrentPath currentPath, string defaultPath)
+		public CurrentPath GetSavePath(string fileName, CurrentPath currentPath, string defaultPath)
 		{
 			try
 			{
@@ -25,5 +25,11 @@ namespace ManagerDirectory.Serialization
 			currentPath.Path = defaultPath;
 			return currentPath;
 		}
+
+        public void SaveCurrentPath(CurrentPath currentPath, string fileName)
+        {
+            _currentPath = JsonSerializer.Serialize(currentPath);
+            File.WriteAllText(fileName, _currentPath);
+        }
 	}
 }

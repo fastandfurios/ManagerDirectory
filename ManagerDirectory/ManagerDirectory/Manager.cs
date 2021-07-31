@@ -26,7 +26,7 @@ namespace ManagerDirectory
 		/// </summary>
 		private void Start()
 		{
-			_currentPath = _deserializer.Deserialize(_fileName, _currentPath, _defaultPath);
+			_currentPath = _managerRepository.GetSavePath(_fileName, _currentPath, _defaultPath);
 
 			foreach (var drive in DriveInfo.GetDrives())
 			{
@@ -121,7 +121,7 @@ namespace ManagerDirectory
 				else
 				{
 					_currentPath.Path = _defaultPath;
-					_serializer.Serialize(_currentPath, _fileName);
+					_managerRepository.SaveCurrentPath(_currentPath, _fileName);
 				}
 			}
 			catch (Exception e)

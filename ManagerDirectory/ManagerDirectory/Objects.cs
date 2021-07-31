@@ -7,7 +7,6 @@ using ManagerDirectory.Actions;
 using ManagerDirectory.IO;
 using ManagerDirectory.Models;
 using ManagerDirectory.Repository;
-using ManagerDirectory.Serialization;
 using ManagerDirectory.Validation;
 
 namespace ManagerDirectory
@@ -18,8 +17,7 @@ namespace ManagerDirectory
 	    protected Output _output;
 	    protected Copying _copying;
 	    protected Deletion _deletion;
-	    protected Serializer _serializer;
-	    protected Deserializer _deserializer;
+	    protected ManagerRepository _managerRepository;
 	    protected CurrentPath _currentPath;
 	    protected Informer _informer;
 	    protected Checker _checker;
@@ -27,8 +25,7 @@ namespace ManagerDirectory
 
 		protected Objects()
 	    {
-		    _serializer = new Serializer();
-		    _deserializer = new Deserializer();
+		    _managerRepository = new ManagerRepository();
 		    _input = new InputData();
 		    _output = new Output();
 		    _copying = new Copying();
